@@ -109,6 +109,13 @@ FOLDERLISTA=( $(echo "${FOLDERLISTU[@]} ${FOLDERLIST[@]}" | tr ' ' '\n' | sort -
 
 if [ -z "$MISSING" ]; then MISSING=$((${#FOLDERLISTA[@]} - 2)); fi    #minimum of data for 2 species unless otherwise specified
 
+echo {Name_of_Assembler} >> ${MAINFOLDER}/metrics_file.txt
+echo {Name_of_Data_set} >> ${MAINFOLDER}/metrics_file.txt
+echo {Total_Data_Set_Size} >> ${MAINFOLDER}/metrics_file.txt
+echo ${GENOMESIZE} >> ${MAINFOLDER}/metrics_file.txt
+echo {Contig_len} >> ${MAINFOLDER}/metrics_file.txt
+echo {Contig_num} >> ${MAINFOLDER}/metrics_file.txt
+
 #use skip flag to skip various parts of the script
 if [ "$SKIP" -lt 1 ]; then
     if [ -n "${GENOMESIZE}" ]; then

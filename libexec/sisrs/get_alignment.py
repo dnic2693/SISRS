@@ -33,7 +33,9 @@ class Alignment:
         self.single = single
         
     def numsnps(self):
-        print str(len(self.locations))+' variable sites'
+        my_file_name = ('numsnps.txt') 
+        my_file = open('my_file_name', 'a')
+        my_file.write(str(len(self.locations))+' variable sites')
         singletons,bi=0,0
         for i in range(len(self.locations)):
             bases = [self.species_data[sp][i] for sp in self.species_data if self.species_data[sp][i] in ['A','C','G','T']]
@@ -47,9 +49,10 @@ class Alignment:
                 bi+=1
             self.flag.append(len(c))
                 
-        print str(bi)+' biallelic sites'
-        print str(singletons)+' singletons'
-        
+        my_file.write(str(bi)+' biallelic sites')
+        my_file.write(str(singletons)+' singletons')
+        my_file.close()
+
         return bi
 
 def makerefdict(reffasta):
