@@ -80,7 +80,12 @@ echo "You are using $NAMEOFASSEMBLER as your assembler"
 #Need to find way to append line 81 to line 1 of metrics_file.txt
 echo "$NAMEOFASSEMBLER" >> metrics_file.txt
 #Need to find way to append line 83 to line 2 of metrics_file.txt
-pwd >> metrics_file.txt 
+pwd >> metrics_file.txt
+
+var=`date`
+STARTTIME=`date`
+echo "$STARTTIME"
+echo "$STARTTIME" >> metrics_file.txt
 
 if [ -z $1 ]; then
     echo "You are using the default values. If this is incorrect, rerun SISRS using the correct flags. For more information run sisrs -h"
@@ -217,4 +222,10 @@ if [ -n "${REFFILE}" ]; then
 else
     ( ${DIR}/libexec/sisrs/get_alignment.py ${MISSING} X ${MAINFOLDER} )
 fi
+
+var=`date`
+ENDTIME=`date`
+echo "$ENDTIME"
+echo "$ENDTIME" >> metrics_file.txt
+
 echo ==== DONE ====
