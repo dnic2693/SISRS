@@ -70,7 +70,7 @@ case "${option}"
         esac
 done
 
-echo "" > metrics_file.txt
+echo ":)" > metrics_file.txt
 echo "Name of assembler:
 Name of data set:
 Total size of data set:" > metrics_file.txt
