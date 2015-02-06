@@ -74,7 +74,7 @@ echo "" > metrics_file.txt
 echo "Name of assembler:
 Name of data set:
 Total size of data set:" > metrics_file.txt
-echo "Enter the name of your assembler"
+echo "Enter the name of your ASSEMBLER"
 read NAMEOFASSEMBLER
 echo "You are using $NAMEOFASSEMBLER as your assembler"
 #Need to find way to append line 81 to line 1 of metrics_file.txt
