@@ -71,9 +71,14 @@ case "${option}"
 done
 
 echo "" > metrics_file.txt
-echo "Name of assembler:
-Name of data set:
-Total size of data set:" > metrics_file.txt
+echo "Enter the name of your data set:"
+read NAMEOFDATASET
+echo "Your data set is named $NAMEOFDATASET"
+echo "$NAMEOFDATASET" >> metrics_file.txt
+echo "Enter the size (Mb or Gb) of your data set:"
+read SIZEOFDATASET
+echo "The size of your data set it $SIZEOFDATASET"
+echo $SIZEOFDATASET >> metrics_file.txt
 echo "Enter the name of your assembler"
 read NAMEOFASSEMBLER
 echo "You are using $NAMEOFASSEMBLER as your assembler"
