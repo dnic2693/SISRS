@@ -76,26 +76,27 @@ read NAMEOFDATASET
 echo "Your data set is named $NAMEOFDATASET"
 echo "Name of Data Set:" > metrics_file.txt 
 echo "$NAMEOFDATASET" >> metrics_file.txt
+
 echo "Enter the size (Mb or Gb) of your data set:"
 read SIZEOFDATASET
 echo "The size of your data set is $SIZEOFDATASET"
 echo "Size of Data Set:" >> metrics_file.txt 
 echo $SIZEOFDATASET >> metrics_file.txt
+
 echo "Enter the name of your assembler"
 read NAMEOFASSEMBLER
 echo "You are using $NAMEOFASSEMBLER as your assembler"
-#Need to find way to append line 81 to line 1 of metrics_file.txt
 echo "Name of Assembler:" >> metrics_file.txt 
 echo "$NAMEOFASSEMBLER" >> metrics_file.txt
-#Need to find way to append line 83 to line 2 of metrics_file.txt
+
 echo "Genome Size:" >> metrics_file.txt
 echo ${GENOMESIZE} >> ${MAINFOLDER}/metrics_file.txt
-pwd >> metrics_file.txt
 
+echo "Time:" >> metrics_file.txt 
 var=`date`
 STARTTIME=`date`
 echo "$STARTTIME"
-echo "$STARTTIME" >> metrics_file.txt
+echo "Start-- $STARTTIME" >> metrics_file.txt
 
 if [ -z $1 ]; then
     echo "You are using the default values. If this is incorrect, rerun SISRS using the correct flags. For more information run sisrs -h"
@@ -229,6 +230,8 @@ fi
 var=`date`
 ENDTIME=`date`
 echo "$ENDTIME"
-echo "$ENDTIME" >> metrics_file.txt
+echo "End-- $ENDTIME" >> metrics_file.txt
+
+pwd >> metrics_file.txt
 
 echo ==== DONE ====
