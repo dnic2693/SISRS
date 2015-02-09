@@ -232,6 +232,7 @@ ENDTIME=`date`
 echo "$ENDTIME"
 echo "End-- $ENDTIME" >> metrics_file.txt
 
+echo "Current Working Directory:" >> metrics_file.txt
 pwd >> metrics_file.txt
 
 echo ==== DONE ====
