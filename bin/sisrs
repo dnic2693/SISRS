@@ -85,6 +85,8 @@ echo "You are using $NAMEOFASSEMBLER as your assembler"
 #Need to find way to append line 81 to line 1 of metrics_file.txt
 echo "$NAMEOFASSEMBLER" >> metrics_file.txt
 #Need to find way to append line 83 to line 2 of metrics_file.txt
+echo "Genome Size" >> metrics_file.txt
+echo ${GENOMESIZE} >> ${MAINFOLDER}/metrics_file.txt
 pwd >> metrics_file.txt
 
 var=`date`
@@ -130,10 +132,6 @@ fi
 FOLDERLISTA=( $(echo "${FOLDERLISTU[@]} ${FOLDERLIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )
 
 if [ -z "$MISSING" ]; then MISSING=$((${#FOLDERLISTA[@]} - 2)); fi    #minimum of data for 2 species unless otherwise specified
-
-
-echo ${GENOMESIZE} >> ${MAINFOLDER}/metrics_file.txt
-
 
 #use skip flag to skip various parts of the script
 if [ "$SKIP" -lt 1 ]; then
