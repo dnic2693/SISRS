@@ -76,6 +76,7 @@ case $yn in
 Yes ) echo "--START OF SCRIPT--" > metrics_file.txt; break;;
 No ) echo "--END OF SCRIPT--" >> metrics_file.txt; exit;;
 esac
+done
 
 echo "Enter the name of your data set:"
 read NAMEOFDATASET
