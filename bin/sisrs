@@ -72,11 +72,11 @@ done
 
 echo "Would you like to create a new metrics file?"
 select yn in "Yes" "No"; do
-> case $yn in
-> Yes ) echo "" > metrics_file.txt; break;;
-> No ) echo "END OF SCRIPT" >> metrics_file.txt;;
-> esac
-> done
+case $yn in
+Yes ) echo "--START OF SCRIPT--" > metrics_file.txt; break;;
+No ) echo "--END OF SCRIPT--" >> metrics_file.txt;;
+esac
+done
 
 echo "Enter the name of your data set:"
 read NAMEOFDATASET
