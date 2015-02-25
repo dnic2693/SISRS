@@ -228,7 +228,16 @@ if [ -n "${REFFILE}" ]; then
     ( ${DIR}/libexec/sisrs/get_alignment.py ${MISSING} ${REFFILE} ${MAINFOLDER} )
 else
     ( ${DIR}/libexec/sisrs/get_alignment.py ${MISSING} X ${MAINFOLDER} )
-fi ; break;;
+fi
+var=`date`
+ENDTIME=`date`
+echo "$ENDTIME"
+echo "End-- $ENDTIME" >> metrics_file.txt
+
+echo "Current Working Directory:" >> metrics_file.txt
+pwd >> metrics_file.txt
+
+echo ==== DONE ==== ; exit;;
 esac
 done
 
