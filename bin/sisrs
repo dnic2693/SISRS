@@ -74,7 +74,161 @@ echo "Would you like to create a new metrics file?"
 select yn in "Yes" "No"; do
 case $yn in
 Yes ) echo "" > metrics_file.txt; break;;
-No ) echo "" >> metrics_file.txt; break;;
+No ) echo "" >> metrics_file.txt; echo "Enter the name of your data set:"
+read NAMEOFDATASET
+echo "Your data set is named $NAMEOFDATASET"
+echo "Name of Data Set:" >> metrics_file.txt 
+echo "$NAMEOFDATASET" >> metrics_file.txt
+
+echo "Enter the size (Mb or Gb) of your data set:"
+read SIZEOFDATASET
+echo "The size of your data set is $SIZEOFDATASET"
+echo "Size of Data Set:" >> metrics_file.txt 
+echo $SIZEOFDATASET >> metrics_file.txt
+
+echo "Enter the name of your assembler"
+read NAMEOFASSEMBLER
+echo "You are using $NAMEOFASSEMBLER as your assembler"
+echo "Name of Assembler:" >> metrics_file.txt 
+echo "$NAMEOFASSEMBLER" >> metrics_file.txt
+
+echo "Genome Size:" >> metrics_file.txt
+echo ${GENOMESIZE} >> ${MAINFOLDER}/metrics_file.txt
+
+echo "Time:" >> metrics_file.txt 
+var=`date`
+STARTTIME=`date`
+echo "$STARTTIME"
+echo "Start-- $STARTTIME" >> metrics_file.txt
+
+if [ -z $1 ]; then
+    echo "You are using the default values. If this is incorrect, rerun SISRS using the correct flags. For more information run sisrs -h"
+fi
+
+DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the sisrs file?
+DIR=$( dirname ${DIRS} )                                    #go one level up from location of sisrs file
+MAINFOLDER=$( echo "${MAINFOLDER}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
+
+which velveth &>/dev/null
+[ $? -eq 0 ] || { echo "Velvet must be installed to run SISRS. The installation folder must be in your path. Aborting."; exit 1; }
+which bowtie2 &>/dev/null
+[ $? -eq 0 ] || { echo "Bowtie2 must be installed to run SISRS. The installation folder must be in your path. Aborting."; exit 1; }
+which parallel &>/dev/null
+[ $? -eq 0 ] || { echo "GNU parallel must be installed to run SISRS. The installation folder must be in your path. Aborting."; exit 1; }
+
+#get paired fastq
+FILELIST=( $( find "${MAINFOLDER}" -name "*R1*fastq" ) )     #all fastq file paths as array
+if [[ ${#FILELIST[@]} -gt 0 ]]; then
+    declare -a ALLFOLDERLIST=()
+    for F in "${FILELIST[@]}"; do ALLFOLDERLIST+=("$( dirname "${F}" )"); done       #array of directories containing fastq files
+    FOLDERLIST=( $(echo "${ALLFOLDERLIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )  #sorted unique list of folders with paired fastq files as array
+fi
+
+#get unpaired fastq
+FILELISTA=( $( find "${MAINFOLDER}" -name "*fastq" ) )     
+FILELISTU=()
+for F in "${FILELISTA[@]}"; do
+    if [[ $F != *R1* ]] && [[ $F != *R2* ]] && [[ $F != *shuffled* ]] && [[ $F != *sampled* ]]; then FILELISTU+=${F}
+    fi
+done
+if [[ ${#FILELISTU[@]} -gt 0 ]]; then
+    declare -a ALLFOLDERLISTU=()
+    for F in "${FILELISTU[@]}"; do ALLFOLDERLISTU+=("$( dirname "${F}" )"); done       #array of directories containing fastq files
+    FOLDERLISTU=( $(echo "${ALLFOLDERLISTU[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )  #sorted unique list of folders with unpaired fastq files as array
+fi
+FOLDERLISTA=( $(echo "${FOLDERLISTU[@]} ${FOLDERLIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )
+
+if [ -z "$MISSING" ]; then MISSING=$((${#FOLDERLISTA[@]} - 2)); fi    #minimum of data for 2 species unless otherwise specified
+
+#use skip flag to skip various parts of the script
+if [ "$SKIP" -lt 1 ]; then
+    if [ -n "${GENOMESIZE}" ]; then
+        NUMER=$((10*${GENOMESIZE}))
+        DENOM=$((100*2*${#FOLDERLISTA[@]}))      #assumes 100bp reads - add option in future
+        LEFTREADS=$((${NUMER}/${DENOM}))
+        parallel --jobs "${PROCESSORS}" "python ${DIR}/libexec/sisrs/sub_sample_for_velvet_unshuff.py ${LEFTREADS} {}" ::: "${FOLDERLISTA[@]}"   #subsample data and shuffle 
+    else        #shuffle paired end reads together if not subsampling         
+        parallel --jobs "${PROCESSORS}" "perl ${DIR}/libexec/sisrs/shuffleSequences_fastq.pl" '{} $(echo {} | sed 's/R1/R2/') $(echo {} | sed 's/R1/shuffled/')' ::: "${FILELIST[@]}"
+        for F in "${FILELISTU[@]}"; do ln $F $(dirname "${F}")/subsampled_$(basename "${F}"); done
+    fi
+    
+    #make reference contigs - velveth
+    if [ -n "${REFFILE}" ]; then
+        if [[ ${#FILELISTU[@]} -gt 0 ]]; then
+            if [[ ${#FILELIST[@]} -gt 0 ]]; then
+                velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fasta -reference ${REFFILE} -fastq -shortPaired ${MAINFOLDER}/*/*shuffled*fastq -short ${MAINFOLDER}/*/subsampled*fastq
+            else
+                velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fasta -reference ${REFFILE} -fastq -short ${MAINFOLDER}/*/subsampled*fastq
+            fi
+        else
+            velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fasta -reference ${REFFILE} -fastq -shortPaired ${MAINFOLDER}/*/*shuffled*fastq
+        fi
+    else
+        if [[ ${#FILELISTU[@]} -gt 0 ]]; then
+            if [[ ${#FILELIST[@]} -gt 0 ]]; then
+                velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fastq -shortPaired ${MAINFOLDER}/*/*shuffled*fastq -short ${MAINFOLDER}/*/subsampled*fastq
+            else
+                velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary ${REFFILE} -fastq -short ${MAINFOLDER}/*/subsampled*fastq
+            fi
+        else
+            velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary ${REFFILE} -fastq -shortPaired ${MAINFOLDER}/*/*shuffled*fastq
+        fi
+    fi
+    echo ==== Velveth is finished ====
+    
+    velvetg ${MAINFOLDER}/velvetoutput -exp_cov auto -cov_cutoff auto# -min_contig_lgth 100     #run velvet - output contigs
+    echo ==== Velvetg is finished ====
+    
+fi  #skipped making contigs if SKIP>0
+
+if [ "$SKIP" -lt 2 ]; then
+    bowtie2-build ${MAINFOLDER}/velvetoutput/contigs.fa ${MAINFOLDER}/velvetoutput/contigs      #index contigs
+    
+    #align reads to contigs
+    for FILE in "${FILELIST[@]}"; do
+        NAME=$( echo ${FILE} | sed 's/R1//' | sed 's/\.[^.]*$//' ) #includes folder but not the read or the extension
+        echo ==== Aligning ${NAME} ====
+        #N=1 allows a mismatch #x The basename of the index for the reference genome
+        bowtie2 -p "${PROCESSORS}" -N 1 --local -x ${MAINFOLDER}/velvetoutput/contigs -1 ${FILE} -2 $( echo ${FILE}|sed 's/R1/R2/' ) > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -F 4 - | samtools sort - ${NAME}
+    done
+    for FILE in "${FILELISTU[@]}"; do
+        NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' ) #includes folder but not the read or the extension
+        echo ==== Aligning ${NAME} ====
+        #N=1 allows a mismatch #x The basename of the index for the reference genome
+        bowtie2 -p "${PROCESSORS}" -N 1 --local -x ${MAINFOLDER}/velvetoutput/contigs -U ${FILE} > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -F 4 - | samtools sort - ${NAME}
+    done
+    echo ==== Done Aligning ====
+fi #also skipped aligning reads if SKIP>1
+    
+if [ "$SKIP" -lt 3 ]; then
+    #index bam
+    parallel --jobs "${PROCESSORS}" 'samtools index $( echo {} | sed 's/R1//' | sed 's/\.[^.]*$//' ).bam' ::: "${FILELIST[@]}" "${FILELISTU[@]}"
+    echo ==== Done Indexing Bam Files ====
+    
+    #get pileups for data
+    parallel --jobs "${PROCESSORS}" "samtools mpileup -f ${MAINFOLDER}/velvetoutput/contigs.fa" '$( echo {} | sed 's/R1//' | sed 's/\.[^.]*$//' ).bam -A > $( echo {} | sed 's/R1//' | sed 's/\.[^.]*$//' ).pileups' ::: "${FILELIST[@]}" "${FILELISTU[@]}"
+    echo ==== Done Piling Up ====
+       
+    #map contigs to reference
+    if [ -n "${REFFILE}" ]; then
+        NAME=$( echo ${REFFILE} | sed 's/\.[^.]*$//' )
+        bowtie2-build ${REFFILE} ${NAME}        #bowtie2-build [options]* <reference_in> <bt2_base>
+        bowtie2 -p ${PROCESSORS} -N 1 -x ${NAME} -f -U ${MAINFOLDER}/velvetoutput/contigs.fa > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) -S ${MAINFOLDER}/velvetoutput/align_contigs.sam    #bowtie2 -x <ref_base> -U <fq files> -S <output sam>
+    echo ==== Done Mapping Contigs ====
+    fi
+fi  #also skipped bam, pileups, reference mapping if SKIP>2
+
+if [ "$SKIP" -lt 4 ]; then
+    #put base for each site in a dictionary (allows no variation when calling sites)
+    parallel --jobs "${PROCESSORS}" "${DIR}/libexec/sisrs/get_pruned_dict.py {} ${MINREAD} ${THRESHOLD}" ::: "${FOLDERLISTA[@]}"
+    echo ==== Done Identifying Fixed Sites Without Error ====
+fi  #end of skip
+
+if [ -n "${REFFILE}" ]; then
+    ( ${DIR}/libexec/sisrs/get_alignment.py ${MISSING} ${REFFILE} ${MAINFOLDER} )
+else
+    ( ${DIR}/libexec/sisrs/get_alignment.py ${MISSING} X ${MAINFOLDER} )
+fi ; break;;
 esac
 done
 
