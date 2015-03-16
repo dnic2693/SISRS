@@ -107,7 +107,6 @@ do
     esac
 done
 
-<<<<<<< HEAD
 echo "Would you like to create a new metrics file?"
 select yn in "Yes" "No"; do
 case $yn in
@@ -143,12 +142,6 @@ STARTTIME=`date`
 echo "$STARTTIME"
 echo "Start-- $STARTTIME" >> metrics_file.txt
 
-if [ -z $1 ]; then
-    echo "You are using the default values. If this is incorrect, rerun SISRS using the correct flags. For more information run sisrs -h"
-fi
-
-=======
->>>>>>> a776871028cabefe471852dbc29172610c20b533
 DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the sisrs file?
 DIR=$( dirname ${DIRS} )                                    #go one level up from location of sisrs file
 MAINFOLDER=$( echo "${MAINFOLDER}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
@@ -427,7 +420,6 @@ else
     exit 0
 fi
 
-<<<<<<< HEAD
 var=`date`
 ENDTIME=`date`
 echo "$ENDTIME"
@@ -437,7 +429,7 @@ echo "Current Working Directory:" >> metrics_file.txt
 pwd >> metrics_file.txt
 
 echo ==== DONE ====
-=======
+
 if [[ DEBUG -eq 1 ]]; then
     echo "DIRS          = ${DIRS}"
     echo "DIR           = ${DIR}"
@@ -451,4 +443,3 @@ if [[ DEBUG -eq 1 ]]; then
     echo "FOLDERLISTA   = ${FOLDERLISTA}"
     echo "MISSING       = ${MISSING}"
 fi
->>>>>>> a776871028cabefe471852dbc29172610c20b533
