@@ -402,10 +402,8 @@ else
     exit 0
 fi
 
+echo "Name_Of_Data_Set" "Size_Of_Data_Set" "Name_Of_Assembler" "Genome_Size" >> metrics_file.txt
 echo "$NAMEOFDATASET" "$SIZEOFDATASET" "$NAMEOFASSEMBLER" "${GENOMESIZE}" >> metrics_file.txt 
-
-echo "Current Working Directory:" >> metrics_file.txt
-pwd >> metrics_file.txt
 
 echo ==== DONE ====
 
