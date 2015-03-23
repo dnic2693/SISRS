@@ -107,6 +107,8 @@ do
     esac
 done
 
+START=$(date +%s)
+
 echo "Would you like to create a new metrics file?"
 select yn in "Yes" "No"; do
 case $yn in
@@ -118,7 +120,7 @@ done
 echo "Enter the name of your data set:"
 read NAMEOFDATASET
 
-echo "Enter the size (Mb or Gb) of your data set:"
+echo "Enter the size (in MB) of your data set:"
 read SIZEOFDATASET
 
 echo "Enter the name of your assembler"
@@ -402,8 +404,11 @@ else
     exit 0
 fi
 
-echo "Name_Of_Data_Set" "Size_Of_Data_Set" "Name_Of_Assembler" "Genome_Size" >> metrics_file.txt
-echo "$NAMEOFDATASET" "$SIZEOFDATASET" "$NAMEOFASSEMBLER" "${GENOMESIZE}" >> metrics_file.txt 
+END=$(date +%s)
+TIME=$(( $END - $START ))
+
+echo "Name_Of_Data_Set" "Size_Of_Data_Set_MB" "Name_Of_Assembler" "Genome_Size_bp" "Time_Seconds" >> metrics_file.txt
+echo "$NAMEOFDATASET" "$SIZEOFDATASET" "$NAMEOFASSEMBLER" "${GENOMESIZE}" "$TIME" >> metrics_file.txt 
 
 echo ==== DONE ====
 
