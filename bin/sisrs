@@ -412,7 +412,7 @@ TIME=$(( $END - $START ))
 echo "Name_Of_Data_Set" "Size_Of_Data_Set_MB" "Name_Of_Assembler" "Genome_Size_bp" "Time_Seconds" "N50" >> metrics_file.txt
 echo "$NAMEOFDATASET" "$SIZEOFDATASET" "$NAMEOFASSEMBLER" "${GENOMESIZE}" "$TIME" >> metrics_file.txt 
 
-python ${DIR}/libexec/gfr/N50.py
+python ${DIR}/libexec/gfr/get_N50.py
 
 echo ==== DONE ====
 
