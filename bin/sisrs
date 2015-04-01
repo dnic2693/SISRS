@@ -400,10 +400,10 @@ else
     exit 0
 fi
 
+N_50=$(python ${DIR}/libexec/gfr/get_N50.py ${MAINFOLDER}/velvetoutput/contigs.fa)
+
 END=$(date +%s)
 TIME=$(( $END - $START ))
-
-N_50=$(python ${DIR}/libexec/gfr/get_N50.py ${MAINFOLDER}/velvetoutput/contigs.fa)
 
 echo "$FILELIST" "$NAMEOFDATASET" "$SIZEOFDATASET" "$ASSEMBLER" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" >> metrics_file.txt 
 
