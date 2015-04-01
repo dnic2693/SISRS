@@ -118,7 +118,7 @@ esac
 done
 
 echo "Enter the size (in MB) of your data set:"
-read SIZEOFDATASET
+read SIZE_OF_DATA_SET
 
 START=$(date +%s)
 
@@ -402,10 +402,12 @@ fi
 
 N_50=$(python ${DIR}/libexec/gfr/get_N50.py ${MAINFOLDER}/velvetoutput/contigs.fa)
 
+NAMEOFDATASET=$(pwd)
+
 END=$(date +%s)
 TIME=$(( $END - $START ))
 
-echo "$FILELIST" "$NAMEOFDATASET" "$SIZEOFDATASET" "$ASSEMBLER" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" >> metrics_file.txt 
+echo "$DATA_SET_FILE_PATH" "$SIZE_OF_DATA_SET" "${ASSEMBLER}" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" >> metrics_file.txt 
 
 echo ==== DONE ====
 
