@@ -402,7 +402,7 @@ fi
 
 N_50=$(python ${DIR}/libexec/gfr/get_N50.py ${MAINFOLDER}/velvetoutput/contigs.fa)
 
-NAMEOFDATASET=$(pwd)
+DATA_SET_FILE_PATH=$(pwd)
 
 END=$(date +%s)
 TIME=$(( $END - $START ))
