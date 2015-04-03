@@ -402,12 +402,15 @@ fi
 
 N_50=$(python ${DIR}/libexec/gfr/get_N50.py ${MAINFOLDER}/velvetoutput/contigs.fa)
 
+getbisinvar=$(python ${DIR}/libexec/sisrs/get_alignment.py ${MISSING} ${REFFILE} ${MAINFOLDER})
+
+
 DATA_SET_FILE_PATH=$(pwd)
 
 END=$(date +%s)
 TIME=$(( $END - $START ))
 
-echo "$DATA_SET_FILE_PATH" "$SIZE_OF_DATA_SET" "${ASSEMBLER}" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$bisinvar" >> metrics_file.txt 
+echo "$DATA_SET_FILE_PATH" "$SIZE_OF_DATA_SET" "${ASSEMBLER}" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$getbisinvar" >> metrics_file.txt 
 
 echo ==== DONE ====
 
