@@ -402,8 +402,6 @@ fi
 
 N_50=$(python ${DIR}/libexec/gfr/get_N50.py ${MAINFOLDER}/velvetoutput/contigs.fa)
 
-bisinvar=$(python ${DIR}/libexec/gfr/biallelicsingletonvariable.py ${MISSING} ${REFFILE} ${MAINFOLDER})
-
 DATA_SET_FILE_PATH=$(pwd)
 
 END=$(date +%s)

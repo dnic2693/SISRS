@@ -33,7 +33,7 @@ class Alignment:
         self.single = single
         
     def numsnps(self):
-        print str(len(self.locations))+' variable sites'
+        #print str(len(self.locations))+' variable sites'
         singletons,bi=0,0
         for i in range(len(self.locations)):
             bases = [self.species_data[sp][i] for sp in self.species_data if self.species_data[sp][i] in ['A','C','G','T']]
@@ -47,8 +47,9 @@ class Alignment:
                 bi+=1
             self.flag.append(len(c))
                 
-        print str(bi)+' biallelic sites'
-        print str(singletons)+' singletons'
+        #print str(bi)+' biallelic sites'
+        #print str(singletons)+' singletons'
+        print str(bi) + str(singletons) + str(len(self.locations)) 
         
         return bi
 
