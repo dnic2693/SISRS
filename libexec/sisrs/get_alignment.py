@@ -49,9 +49,9 @@ class Alignment:
                 
         #print str(bi)+' biallelic sites'
         #print str(singletons)+' singletons'
-        print str(bi) + str(singletons) + str(len(self.locations)) 
+        print 'bisinvar' + str(bi) + str(singletons) + str(len(self.locations)) 
         
-        return bi
+        
 
 def makerefdict(reffasta):
     filein=open(reffasta, "rU") #read fasta file
