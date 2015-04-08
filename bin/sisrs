@@ -109,7 +109,7 @@ done
 
 START=$(date +%s)
 
-echo "Would you like to create a new metrics file?"
+echo "Would you like to create a knew metrics file?"
 select yn in "Yes" "No"; do
 case $yn in
 Yes ) echo "Data_Set_File_Path" "Size_Of_Data_Set_MB" "Name_Of_Assembler" "Number_of_Processors" "Genome_Size_bp" "Time_Seconds" "N50" "bisinvar" > metrics_file.txt; break;;

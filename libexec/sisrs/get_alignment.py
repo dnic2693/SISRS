@@ -49,7 +49,7 @@ class Alignment:
                 
         #print str(bi)+' biallelic sites'
         #print str(singletons)+' singletons'
-        print 'bisinvar' + str(bi) + str(singletons) + str(len(self.locations)) 
+        print 'bisinvar' + str(bi ) + str(singletons ) + str(len(self.locations)) 
         
         
 
