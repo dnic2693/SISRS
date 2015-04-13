@@ -79,7 +79,7 @@ def read_pkls(pathlist):
     alllocs=[]
     for species in pathlist:
         # read python dict back from the file
-        print 'Reading data: '+species
+        #print 'Reading data: '+species
         pkl_file = open(species+'/pruned_dict.pkl', 'rb')
         sp_bases = cPickle.load(pkl_file)
         pkl_file.close()
