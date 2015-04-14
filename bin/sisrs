@@ -273,9 +273,9 @@ identifyFixedSites(){
 
 outputAlignment(){
     if [ -n "${REFFILE}" ]; then
-        ${DIR}/libexec/sisrs/get_alignment.py ${MISSING} ${REFFILE} ${MAINFOLDER}
+        bi_sin_var=$(${DIR}/libexec/sisrs/get_alignment.py ${MISSING} ${REFFILE} ${MAINFOLDER})
     else
-        ${DIR}/libexec/sisrs/get_alignment.py ${MISSING} X ${MAINFOLDER}
+        bi_sin_var=$(${DIR}/libexec/sisrs/get_alignment.py ${MISSING} X ${MAINFOLDER})
     fi
 }
 
