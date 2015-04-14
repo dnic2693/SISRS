@@ -15,7 +15,6 @@ help() {
  SISRS: Site Identification from Short Read Sequences
  
  Version 1.5
->>>>>>> rachelss/master
  Copyright (c) 2013-2015 Rachel Schwartz <Rachel.Schwartz@asu.edu>
  https://github.com/rachelss/SISRS
 
@@ -66,7 +65,6 @@ Flags:
  
  Example command:
  sisrs loci -g 50000000 -p 40 -m 4 -f test_data
->>>>>>> rachelss/master
 
 ENDLINE
 }
@@ -90,7 +88,6 @@ fi
     
 OPTIND=2 # tells getopts to start parsing at the second argument
 
->>>>>>> rachelss/master
 while getopts g:r:k:p:m:a:f:l:n:t:hd option
 do
     case "${option}"
@@ -126,7 +123,6 @@ read SIZE_OF_DATA_SET
 
 START=$(date +%s)
 
->>>>>>> rachelss/master
 DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the sisrs file?
 DIR=$( dirname ${DIRS} )                                    #go one level up from location of sisrs file
 MAINFOLDER=$( echo "${MAINFOLDER}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
@@ -143,7 +139,6 @@ if [[ $ASSEMBLER == "minia" ]]; then
     CONTIGS=miniaoutput
 fi
 
->>>>>>> rachelss/master
 which bowtie2 &>/dev/null
 [ $? -eq 0 ] || { echo "Bowtie2 must be installed to run SISRS. The installation folder must be in your path. Aborting."; exit 1; }
 which parallel &>/dev/null
@@ -177,7 +172,6 @@ subSample(){
     if [ -z $GENOMESIZE ]; then
         echo "You must enter the approximate size of the genome / transcriptome. For more information run sisrs -h"
         exit 0
->>>>>>> rachelss/master
     fi
     
     echo "Subsampling data"
@@ -234,7 +228,6 @@ buildContigs(){
 
 alignContigs(){
     bowtie2-build ${MAINFOLDER}/"${CONTIGS}"/contigs.fa ${MAINFOLDER}/"${CONTIGS}"/contigs      #index contigs
->>>>>>> rachelss/master
     
     #align reads to contigs
     for FILE in "${FILELIST[@]}"; do
@@ -246,7 +239,6 @@ alignContigs(){
     for FILE in "${FILELISTU[@]}"; do
         NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' ) #includes folder but not the read or the extension
         echo ==== Aligning FILELISTU ${NAME} ====
->>>>>>> rachelss/master
         #N=1 allows a mismatch #x The basename of the index for the reference genome
         bowtie2 -p "${PROCESSORS}" -N 1 --local -x ${MAINFOLDER}/"${CONTIGS}"/contigs -U ${FILE} > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -F 4 - | samtools sort - ${NAME}
     done
@@ -269,7 +261,6 @@ mapContigs(){
         NAME=$( echo ${REFFILE} | sed 's/\.[^.]*$//' )
         bowtie2-build ${REFFILE} ${NAME}        #bowtie2-build [options]* <reference_in> <bt2_base>
         bowtie2 -p ${PROCESSORS} -N 1 -x ${NAME} -f -U ${MAINFOLDER}/"${CONTIGS}"/contigs.fa > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) -S ${MAINFOLDER}/"${CONTIGS}"/align_contigs.sam    #bowtie2 -x <ref_base> -U <fq files> -S <output sam>
->>>>>>> rachelss/master
 	echo ==== Done Mapping Contigs ====
     fi
 }
@@ -285,7 +276,6 @@ outputAlignment(){
         ${DIR}/libexec/sisrs/get_alignment.py ${MISSING} ${REFFILE} ${MAINFOLDER}
     else
         ${DIR}/libexec/sisrs/get_alignment.py ${MISSING} X ${MAINFOLDER}
->>>>>>> rachelss/master
     fi
 }
 
@@ -293,14 +283,12 @@ runSISRS(){
     if [[ "${cmds[*]}" =~ "${CMD}" ]]; then               # get pos in list of commands
         for (( i = 0; i < ${#cmds[@]}; i++ )); do
             if [[ "${cmds[$i]}" == "${CMD}" ]]; then
->>>>>>> rachelss/master
                 break
             fi
         done
     else
         i=0
     fi
->>>>>>> rachelss/master
     for (( i = $i; i < ${#cmds[@]}; i++ )); do      #run from selected opt to end
         ${cmds[$i]}
     done
@@ -311,7 +299,6 @@ runSISRS(){
 copyRefContigs(){
     grep -oe "[A-Z]*_*[0-9]*_*len[^/]*" "${MAINFOLDER}/alignment.nex" | uniq -c | sort -k1 -nr | awk '{print $2}' > "${MAINFOLDER}/loci.txt"
     ${DIR}/libexec/gfr/get_seq.py "${MAINFOLDER}/"${CONTIGS}"/contigs.fa" "${MAINFOLDER}/loci.txt" "${MAINFOLDER}/ref_genes.fa" 
->>>>>>> rachelss/master
 }
 
 gfr_aligntoConservedContigs(){
@@ -323,14 +310,12 @@ gfr_aligntoConservedContigs(){
 	    # output sorted bam file w/o unaligned reads - lots per folder
             echo Aligning ${FILE} to conserved contigs
 	    bowtie2 -p "${PROCESSORS}" -N 1 --local -x "${MAINFOLDER}"/ref_genes -1 ${FILE} -2 $( echo ${FILE}|sed 's/R1/R2/' ) > >(tee ${FILE/.fastq/}_stdout.log) 2> >(tee ${FILE/.fastq/}_stderr.log >&2) | samtools view -Su -F 4 - | samtools sort - "$FOLDER"_loci/$(basename ${FILE/.fastq})  
->>>>>>> rachelss/master
         done
     done
     
     for FOLDER in "${FOLDERLISTU[@]}"; do
         for FILE in "${FOLDER}"/*reads*fastq; do
             bowtie2 -p "${PROCESSORS}" -N 1 --local -x "${MAINFOLDER}"/ref_genes -U ${FILE} > >(tee ${FILE/.fastq/}_stdout.log) 2> >(tee ${FILE/.fastq/}_stderr.log >&2) | samtools view -Su -F 4 - | samtools sort - "$FOLDER"_loci/$(basename ${FILE/.fastq})  
->>>>>>> rachelss/master
         done        
     done
 }
@@ -374,7 +359,6 @@ gfr_getAlignments(){
     for F in "${FOLDERLISTA[@]}"; do mv "${MAINFOLDER}"/loci/$(basename ${F}).fa "${MAINFOLDER}"/loci/$(basename ${F}).fasta; done   # delete species fasta files 
         
     find "${MAINFOLDER}"/loci/ -type f -name '*fa' | parallel -j "${PROCESSORS}" "mafft {} > {.}_align.fa"
->>>>>>> rachelss/master
 }
 
 runGFR(){
@@ -392,14 +376,12 @@ runGFR(){
         mkdir "${MAINFOLDER}"/loci
     else
         find "${MAINFOLDER}"/loci/ -type f -name '*fa' | parallel -j "${PROCESSORS}" "rm -f {}"    #delete old loci
->>>>>>> rachelss/master
     fi
     
     gfr_getAlignments
 }
 
 ####################RUN####################
->>>>>>> rachelss/master
 if [[ $CMD = "sites" ]] || [[ "${cmds[*]}" =~ $CMD ]]; then
     # Run SISRS only
     echo "**** SISRS ****"
@@ -468,4 +450,3 @@ if [[ DEBUG -eq 1 ]]; then
     echo "FOLDERLISTA   = ${FOLDERLISTA}"
     echo "MISSING       = ${MISSING}"
 fi
->>>>>>> rachelss/master
