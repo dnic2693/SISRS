@@ -435,8 +435,6 @@ if [[ DEBUG -eq 1 ]]; then
     echo "MISSING       = ${MISSING}"
 fi
 
-fi
-
 if [[ DEBUG -eq 1 ]]; then
     echo "DIRS          = ${DIRS}"
     echo "DIR           = ${DIR}"
