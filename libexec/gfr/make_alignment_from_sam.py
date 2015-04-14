@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#! /usr/local/bin/python
-=======
 #!/usr/bin/env python2
->>>>>>> rachelss/master
 #take sam file aligned to single contig and produce whole alignment
 import sys
 from Bio.Seq import Seq
@@ -14,10 +10,6 @@ from collections import Counter
 import operator
 import math
 from decimal import *
-<<<<<<< HEAD
-import pysam
-=======
->>>>>>> rachelss/master
 
 #######################
 def factorial(n):        #function to do factorials
@@ -167,21 +159,9 @@ folder_name='/'.join(contig_read_mappings.split('/')[:-1])
 file_name=contig_read_mappings.split('/')[-1]
 node_name=file_name.split('.')[0]
 
-<<<<<<< HEAD
-bamfile = pysam.AlignmentFile(f, "rb")    #open file
-for col in bamfile.pileup():     #go through each site
-    bases = [read.alignment.query_sequence[read.query_position] for read in col.pileups]
-    if len(bases) > 3:
-        print get_consensus(bases)
-    else:
-        print 'N'
-
-
-=======
 totalseq,totalqual=[],[]
 #get alignment
 samfile=open(contig_read_mappings,'r')    #open file
->>>>>>> rachelss/master
 for line in samfile:      #go through file
     if line.startswith('@'):
         continue

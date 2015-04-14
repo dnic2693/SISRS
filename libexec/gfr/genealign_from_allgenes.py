@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#! /usr/local/bin/python
-=======
 #!/usr/bin/env python2
->>>>>>> rachelss/master
 import os
 import subprocess
 import sys
@@ -31,19 +27,11 @@ def read_resort(species,seqdict,numalleles):
     return seqdict
 
 ##########################################################
-<<<<<<< HEAD
-fafiles = glob.glob("loci/*.fa")
-=======
 fafiles = glob.glob(sys.argv[2]+"/loci/*.fa")
->>>>>>> rachelss/master
 print fafiles
 seqdict=dict()
 for f in fafiles:
     seqdict = read_resort(f,seqdict,int(sys.argv[1]))        #gene:(SeqRecord(species,sequence))
 
 for gene, records in seqdict.iteritems():
-<<<<<<< HEAD
-    SeqIO.write(records, 'loci/'+gene+'.fa', "fasta")
-=======
     SeqIO.write(records, sys.argv[2]+'/loci/'+gene+'.fa', "fasta")
->>>>>>> rachelss/master

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#!/usr/bin/env python
-=======
 #!/usr/bin/env python2
->>>>>>> rachelss/master
 import sys
 from Bio import SeqIO
 

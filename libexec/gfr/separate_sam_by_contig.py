@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#! /usr/local/bin/python
-=======
 #!/usr/bin/env python2
->>>>>>> rachelss/master
 import sys
 
 folder='/'.join(sys.argv[1].split('/')[:-1])

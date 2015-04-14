@@ -10,14 +10,6 @@ N = int(sys.argv[1])     #number of left reads required per sample for 10x total
 samplep,sampleu = [],[]
 i=0
 
-<<<<<<< HEAD
-paired1=glob.glob(sys.argv[2]+"/*R1*fastq")
-paired2=glob.glob(sys.argv[2]+"/*R2*fastq")
-allfq=glob.glob(sys.argv[2]+"/*fastq")
-
-for fq in paired1:
-    print 'Subsampling '+fq
-=======
 taxonfolder=sys.argv[2]
 mainfolder=os.path.dirname(os.path.abspath(taxonfolder))
 taxon_files = glob.glob(taxonfolder+'/*.fastq')
@@ -29,7 +21,6 @@ unpaired = [f for f in taxon_files if '_R' not in f]
 print 'unpaired files: '+" ".join(unpaired)
 
 for fq in paired1:
->>>>>>> rachelss/master
     f1=open(fq, 'r')
     f2=open(fq.replace('_R1','_R2'), 'r')
     
@@ -45,37 +36,6 @@ for fq in paired1:
     f1.close()
     f2.close()
 
-<<<<<<< HEAD
-if not paired1:
-    N=N*2
-    for fq in allfq:
-        if (fq not in paired1 and fq not in paired2 and 'sub' not in fq):
-            print 'Subsampling '+fq
-            f1=open(fq, 'r')
-            for line in f1:
-                if not line: break      #have less than desired coverage
-                read_info=[line,f1.next(),f1.next(),f1.next()]
-                if i < N:        
-                    sample.append(read_info)
-                elif random.random() < N/float(i+1):
-                    replace = random.randint(0,len(sample)-1)
-                    sample[replace] = read_info
-                i+=1
-            f1.close()
-            
-    f = open(sys.argv[2]+'/subsampled.fastq','w')
-    for read_info in sample:
-        f.write("".join(read_info))
-    f.close()
-    print(str(len(sample))+' reads sampled')
-    
-else:
-    print(str(len(sample))+' pairs of reads sampled')
-    f = open(sys.argv[2]+'/subsampled_shuffled.fastq','w')
-    for read_info in sample:
-        f.write("".join(read_info))
-    f.close()
-=======
 for fq in unpaired:
     f1=open(fq, 'r')
     for line in f1:
@@ -110,4 +70,3 @@ if len(sampleu)>0:
         f.write("".join(read_info))
     f.close()
     print(str(len(sampleu)*2)+' unpaired reads sampled')
->>>>>>> rachelss/master
