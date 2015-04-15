@@ -113,13 +113,10 @@ START=$(date +%s)
 echo "Would you like to create a new metrics file?"
 select yn in "Yes" "No"; do
 case $yn in
-Yes ) echo "Data_Set_File_Path" "Size_Of_Data_Set_MB" "Name_Of_Assembler" "Number_of_Processors" "Genome_Size_bp" "Time_Seconds" "N50" "biallelic_sites" "singletons" "variable_sites" > metrics_file.txt; break;;
+Yes ) echo "Data_Set_File_Path" "Size_Of_Data_Set_Kb" "Name_Of_Assembler" "Number_of_Processors" "Genome_Size_bp" "Time_Seconds" "N50" "biallelic_sites" "singletons" "variable_sites" > metrics_file.txt; break;;
 No ) echo "" >> metrics_file.txt; break;;
 esac
 done
-
-echo "Enter the size (in MB) of your data set:"
-read SIZE_OF_DATA_SET
 
 START=$(date +%s)
 
@@ -410,6 +407,8 @@ else
 
 fi
 
+SIZE_OF_CONTIGS=$(du -h ${MAINFOLDER}/velvetoutput/contigs.fa | cut -f1 -d 'K')
+
 N_50=$(${DIR}/libexec/gfr/get_N50.py ${MAINFOLDER}/velvetoutput/contigs.fa)
 
 DATA_SET_FILE_PATH=$(pwd)
@@ -417,7 +416,7 @@ DATA_SET_FILE_PATH=$(pwd)
 END=$(date +%s)
 TIME=$(( $END - $START ))
 
-echo "$DATA_SET_FILE_PATH" "$SIZE_OF_DATA_SET" "${ASSEMBLER}" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$bi_sin_var" >> metrics_file.txt 
+echo "$DATA_SET_FILE_PATH" "$SIZE_OF_CONTIGS" "${ASSEMBLER}" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$bi_sin_var" >> metrics_file.txt 
 
 echo ==== DONE ====
 
