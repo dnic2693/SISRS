@@ -77,7 +77,7 @@ MAINFOLDER=.
 THRESHOLD=1
 ALLELES=1
 DEBUG=0
-ASSEMBLER=velvet
+ASSEMBLER=Velvet
 CMD=$1
 
 cmds=(subSample buildContigs alignContigs mapContigs identifyFixedSites outputAlignment)
