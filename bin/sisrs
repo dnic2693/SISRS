@@ -128,14 +128,14 @@ if [[ $ASSEMBLER == "Velvet" ]]; then
     which velveth &>/dev/null
     [ $? -eq 0 ] || { echo "Velvet must be installed to run SISRS. The installation folder must be in your path.    Aborting."; exit 1; }
     CONTIGS=velvetoutput
-    SIZE_OF_CONTIGS=$(du -h ${MAINFOLDER}/velvetoutput/contigs.fa | cut -f1 -d 'K')
+    SIZE_OF_CONTIGS=$(du -h -k ${MAINFOLDER}/velvetoutput/contigs.fa | cut -f1)
 fi
 
 if [[ $ASSEMBLER == "minia" ]]; then
     which minia &>/dev/null
     [ $? -eq 0 ] || { echo "Minia must be installed to run SISRS. The installation folder must be in your path.    Aborting."; exit 1; }
     CONTIGS=miniaoutput
-    SIZE_OF_CONTIGS=$(du -h ${MAINFOLDER}/miniaoutput/contigs.fa | cut -f1 -d 'K')
+    SIZE_OF_CONTIGS=$(du -h -k ${MAINFOLDER}/miniaoutput/contigs.fa | cut -f1)
 fi
 
 which bowtie2 &>/dev/null
