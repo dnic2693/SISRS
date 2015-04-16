@@ -113,7 +113,7 @@ START=$(date +%s)
 echo "Would you like to create a new metrics file?"
 select yn in "Yes" "No"; do
 case $yn in
-Yes ) echo "Data_Set_File_Path" "Size_Of_Data_Set_Kb" "Name_Of_Assembler" "Number_of_Processors" "Genome_Size_bp" "Time_Seconds" "N50" "biallelic_sites" "singletons" "variable_sites" > metrics_file.txt; break;;
+Yes ) echo "Data_Set_File_Path" "Size_Of_Data_Set_kiB" "Name_Of_Assembler" "Number_of_Processors" "Genome_Size_bp" "Time_Seconds" "N50" "Number_of_Contigs" "biallelic_sites" "singletons" "variable_sites" > metrics_file.txt; break;;
 No ) echo "" >> metrics_file.txt; break;;
 esac
 done
@@ -128,14 +128,12 @@ if [[ $ASSEMBLER == "Velvet" ]]; then
     which velveth &>/dev/null
     [ $? -eq 0 ] || { echo "Velvet must be installed to run SISRS. The installation folder must be in your path.    Aborting."; exit 1; }
     CONTIGS=velvetoutput
-    SIZE_OF_CONTIGS=$(du -h -k ${MAINFOLDER}/velvetoutput/contigs.fa | cut -f1)
 fi
 
 if [[ $ASSEMBLER == "minia" ]]; then
     which minia &>/dev/null
     [ $? -eq 0 ] || { echo "Minia must be installed to run SISRS. The installation folder must be in your path.    Aborting."; exit 1; }
     CONTIGS=miniaoutput
-    SIZE_OF_CONTIGS=$(du -h -k ${MAINFOLDER}/miniaoutput/contigs.fa | cut -f1)
 fi
 
 which bowtie2 &>/dev/null
@@ -409,14 +407,18 @@ else
 
 fi
 
-N_50=$(${DIR}/libexec/gfr/get_N50.py ${MAINFOLDER}/velvetoutput/contigs.fa)
+SIZE_OF_CONTIGS=$(du -h -k CONTIGS | cut -f1)
+
+Number_of_Contigs=$(grep -c '>' CONTIGS)
+
+N_50=$(${DIR}/libexec/gfr/get_N50.py CONTIGS)
 
 DATA_SET_FILE_PATH=$(pwd)
 
 END=$(date +%s)
 TIME=$(( $END - $START ))
 
-echo "$DATA_SET_FILE_PATH" "$SIZE_OF_CONTIGS" "${ASSEMBLER}" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$bi_sin_var" >> metrics_file.txt 
+echo "$DATA_SET_FILE_PATH" "$SIZE_OF_CONTIGS" "${ASSEMBLER}" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$Number_of_Contigs" "$bi_sin_var" >> metrics_file.txt 
 
 echo ==== DONE ====
 
