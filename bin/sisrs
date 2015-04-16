@@ -407,11 +407,11 @@ else
 
 fi
 
-SIZE_OF_CONTIGS=$(du -h -k CONTIGS | cut -f1)
+SIZE_OF_CONTIGS=$(du -h -k ${MAINFOLDER}/CONTIGS | cut -f1)
 
-Number_of_Contigs=$(grep -c '>' CONTIGS)
+Number_of_Contigs=$(grep -c '>' ${MAINFOLDER}/CONTIGS)
 
-N_50=$(${DIR}/libexec/gfr/get_N50.py CONTIGS)
+N_50=$(${DIR}/libexec/gfr/get_N50.py ${MAINFOLDER}/CONTIGS)
 
 DATA_SET_FILE_PATH=$(pwd)
 
