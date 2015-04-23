@@ -419,7 +419,7 @@ DATA_SET_FILE_PATH=$(pwd)
 END=$(date +%s)
 TIME=$(( $END - $START ))
 
-echo "$DATA_SET_FILE_PATH" "$SIZE_OF_CONTIGS" "${ASSEMBLER}" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$Number_of_Contigs" "$bi_sin_var" >> metrics_file.txt 
+echo "$DATA_SET_FILE_PATH" "$SIZE_OF_CONTIGS" "${ASSEMBLER}" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$Number_of_Contigs" "$bi_sin_var " >> metrics_file.txt 
 
 echo ==== DONE ====
 
