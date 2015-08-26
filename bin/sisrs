@@ -114,7 +114,7 @@ START=$(date +%s)
 echo "Would you like to create a new metrics file?"
 select yn in "Yes" "No"; do
 case $yn in
-Yes ) echo "Data_Set_File_Path" "Size_Of_Data_Set_kiB" "Name_Of_Assembler" "Number_of_Processors" "Genome_Size_bp" "Time_Seconds" "N50" "Number_of_Contigs" "biallelic_sites" "singletons" "variable_sites" "RAM" > metrics_file.txt; break;;
+Yes ) echo "Data_Set_File_Path" "Size_Of_Data_Set_kiB" "Name_Of_Assembler" "Number_of_Processors" "Genome_Size_bp" "Time_Seconds" "N50" "Number_of_Contigs" "biallelic_sites" "singletons" "variable_sites" "RAM" "kmer_size" "missing" > metrics_file.txt; break;;
 No ) echo "" >> metrics_file.txt; break;;
 esac
 done
