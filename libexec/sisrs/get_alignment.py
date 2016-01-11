@@ -65,11 +65,11 @@ def makerefdict(reffasta):
         
     return refdict #name:sequence_as_list
 
-def get_pileup_files(f):
+def get_pileup_files(f):    #get folders containing pkl files
     pathlist=[]
     for path,dirs,files in os.walk(f):
-        for file in files:
-            if file.endswith(".pkl"):
+        for fi in files:
+            if fi.endswith(".pkl"):
                 pathlist.append(path)
     pathlist=list(set(pathlist))
     pathlist.sort()
@@ -201,7 +201,7 @@ def write_alignment(fi,alignment,numbi):
     ALIGNMENT.write('[ '+ " ".join(alignment.ref_loc)+' ]'+"\n")
     ALIGNMENT.write('[ '+ " ".join(alignment.locations)+' ]'+"\n")
     for species in pathlist: #write sequences for each species
-        ALIGNMENT.write(species.replace('./','')+"\t"+("".join(alignment.species_data[species]))+"\n")
+        ALIGNMENT.write(os.path.basename(species)+"\t"+("".join(alignment.species_data[species]))+"\n")
         
     bi_ref_loc,bi_loc,bi_ref=[],[],[]
     pi_ref_loc,pi_loc,pi_ref=[],[],[]
@@ -228,13 +228,13 @@ def write_alignment(fi,alignment,numbi):
     ALIGNMENTBI.write('[ '+ " ".join(bi_ref_loc)+' ]'+"\n")
     ALIGNMENTBI.write('[ '+ " ".join(bi_loc)+' ]'+"\n")
     for species in pathlist: #write sequences for each species
-        ALIGNMENTBI.write(species.replace('./','')+"\t"+("".join(bi_sp_data[species]))+"\n")
+        ALIGNMENTBI.write(os.path.basename(species)+"\t"+("".join(bi_sp_data[species]))+"\n")
     
     ALIGNMENTPI.write('#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX='+ntax+' NCHAR='+str(len(pi_loc))+';\nFORMAT MISSING=? GAP=- DATATYPE=DNA;\nMATRIX\n')    
     ALIGNMENTPI.write('[ '+ " ".join(pi_ref_loc)+' ]'+"\n")
     ALIGNMENTPI.write('[ '+ " ".join(pi_loc)+' ]'+"\n")
     for species in pathlist: #write sequences for each species
-        ALIGNMENTPI.write(species.replace('./','')+"\t"+("".join(pi_sp_data[species]))+"\n")
+        ALIGNMENTPI.write(os.path.basename(species)+"\t"+("".join(pi_sp_data[species]))+"\n")
         
     if len(alignment.ref) > 0:
         ALIGNMENT.write('reference'+"\t"+("".join(alignment.ref))+"\n")
@@ -251,6 +251,7 @@ def write_alignment(fi,alignment,numbi):
 
 #########################
 num_missing = int(sys.argv[1])
+assembler = sys.argv[4]
 basecomplement = {'a':'t', 'c':'g', 't':'a', 'g':'c', 'A':'t', 'C':'g', 'T':'a', 'G':'c'}
 
 pathlist = get_pileup_files(sys.argv[3])
@@ -264,7 +265,7 @@ numbi = alignment.numsnps()     #prints numbers of snps, biallelic snps, and sin
 nodedict = dict((loc.split('/')[0],'X') for loc in set(alignment.locations))    #make each contig name a key with an empty value (if it has a snp)
 if sys.argv[2] is not 'X':
     ref=makerefdict(sys.argv[2])        #make dict for reference chromosomes
-    samfile=open(sys.argv[3]+'/velvetoutput/align_contigs.sam','r') #sam file contains alignment of contigs to reference ref genome - has chr and pos
+    samfile=open(sys.argv[3]+'/'+assembler+'output/align_contigs.sam','r') #sam file contains alignment of contigs to reference ref genome - has chr and pos
     for line in samfile:
         if not line.startswith('@'):    #skip header
             splitline=line.split()
