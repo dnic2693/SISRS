@@ -13,10 +13,7 @@ help() {
     cat <<ENDLINE
     
  SISRS: Site Identification from Short Read Sequences
-<<<<<<< HEAD
- 
-=======
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
+
  Version 1.5
  Copyright (c) 2013-2015 Rachel Schwartz <Rachel.Schwartz@asu.edu>
  https://github.com/rachelss/SISRS
@@ -61,7 +58,6 @@ Flags:
       low ploidy with <3 individuals
  -m : the number of species that are allowed to have missing data at
       a site
-<<<<<<< HEAD
  -l : the number of alleles for sisrs loci
 
  Example command:
@@ -70,7 +66,6 @@ Flags:
  
  Example command:
  sisrs loci -g 50000000 -p 40 -m 4 -f test_data
-=======
  -o : the length of the final loci dataset for dating
 
  Example command:
@@ -78,7 +73,6 @@ Flags:
  
  Example command:
  sisrs loci -g 1745690 -p 40 -m 4 -f test_data
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
 
 ENDLINE
 }
@@ -91,7 +85,6 @@ MAINFOLDER=.
 THRESHOLD=1
 ALLELES=1
 DEBUG=0
-<<<<<<< HEAD
 ASSEMBLER=Velvet
 CMD=$1
 
@@ -104,7 +97,6 @@ fi
 OPTIND=2 # tells getopts to start parsing at the second argument
 
 while getopts g:r:k:p:m:a:f:l:n:t:hd option
-=======
 ASSEMBLER=velvet
 OUTLENGTH=500000
 CMD=$1
@@ -118,7 +110,6 @@ fi
 OPTIND=2 # tells getopts to start parsing at the second argument
 
 while getopts g:r:k:p:m:a:f:n:t:o:hd option
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
 do
     case "${option}"
 	in
@@ -129,22 +120,18 @@ do
 	m) MISSING=${OPTARG};;
 	f) MAINFOLDER=${OPTARG};;
         a) ASSEMBLER=${OPTARG};;
-<<<<<<< HEAD
 	l) ALLELES=${OPTARG};;
 	n) MINREAD=${OPTARG};;
 	t) THRESHOLD=${OPTARG};;
-=======
 	n) MINREAD=${OPTARG};;
 	t) THRESHOLD=${OPTARG};;
         t) OUTLENGTH=${OPTARG};;
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
 	d) DEBUG=1;;
 	h) help; exit;;
 	\? ) echo "Unknown option" >&2; exit 1;;
     esac
 done
 
-<<<<<<< HEAD
 START=$(date +%s)
 
 echo "Would you like to create a new metrics file?"
@@ -157,13 +144,10 @@ done
 
 START=$(date +%s)
 
-=======
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
 DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the sisrs file?
 DIR=$( dirname ${DIRS} )                                    #go one level up from location of sisrs file
 MAINFOLDER=$( echo "${MAINFOLDER}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
 
-<<<<<<< HEAD
 if [[ $ASSEMBLER == "Velvet" ]]; then
     which velveth &>/dev/null
     [ $? -eq 0 ] || { echo "Velvet must be installed to run SISRS. The installation folder must be in your path.    Aborting."; exit 1; }
@@ -174,7 +158,6 @@ if [[ $ASSEMBLER == "minia" ]]; then
     which minia &>/dev/null
     [ $? -eq 0 ] || { echo "Minia must be installed to run SISRS. The installation folder must be in your path.    Aborting."; exit 1; }
     CONTIGS=miniaoutput
-=======
 if [[ $ASSEMBLER == "velvet" ]]; then
     which velveth &>/dev/null
     [ $? -eq 0 ] || { echo "Velvet must be installed to run SISRS. The installation folder must be in your path. Velvet is called as 'velveth' and 'velvetg'.    Aborting."; exit 1; }
@@ -189,7 +172,6 @@ elif [[ $ASSEMBLER == "abyss" ]]; then
     CONTIGS=abyssoutput
 else
     echo "You must specify the assembler as velvet, minia, or abyss. If you do not specify an assembler SISRS will use velvet as the default.  Aborting."; exit 1;
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
 fi
 
 which bowtie2 &>/dev/null
@@ -209,11 +191,8 @@ fi
 FILELISTA=( $( find "${MAINFOLDER}" -name "*fastq" ) )     
 FILELISTU=()
 for F in "${FILELISTA[@]}"; do
-<<<<<<< HEAD
     if [[ $F != *R1* ]] && [[ $F != *R2* ]] && [[ $F != *shuffled* ]] && [[ $F != *sampled* ]]; then FILELISTU+=(${F})
-=======
     if [[ $F != *R1* ]] && [[ $F != *R2* ]] && [[ $F != *subsampled* ]]; then FILELISTU+=(${F})
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
     fi
 done
 if [[ ${#FILELISTU[@]} -gt 0 ]]; then
@@ -232,10 +211,7 @@ subSample(){
     fi
     
     echo "Subsampling data"
-<<<<<<< HEAD
-=======
     if [[ -e "${MAINFOLDER}"/subsamples ]]; then rm -r "${MAINFOLDER}"/subsamples; fi
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
     NUMER=$((10*${GENOMESIZE}))
     DENOM=$((100*2*${#FOLDERLISTA[@]}))      #assumes 100bp reads - add option in future
     LEFTREADS=$((${NUMER}/${DENOM}))
@@ -244,12 +220,9 @@ subSample(){
 }
 
 buildContigs(){
-<<<<<<< HEAD
     if [[ $ASSEMBLER == "Velvet" ]]; then
-=======
     if [[ -e "${MAINFOLDER}"/"${CONTIGS}" ]]; then rm -r ${MAINFOLDER}/${CONTIGS}; fi
     if [[ $ASSEMBLER == "velvet" ]]; then
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
         #make reference contigs - velveth
         if [ -n "${REFFILE}" ]; then
             if [[ ${#FILELISTU[@]} -gt 0 ]]; then
@@ -271,19 +244,16 @@ buildContigs(){
                     velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fastq -shortPaired ${MAINFOLDER}/subsamples/*subsampledp.fastq -short ${MAINFOLDER}/subsamples/*subsampledu.fastq
                 else
                     echo "Running Velvet with SE reads"
-<<<<<<< HEAD
                     velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary ${REFFILE} -fastq -short ${MAINFOLDER}/subsamples/*subsampledu.fastq
                 fi
             else
                 echo "Running Velvet with PE reads"
                 velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary ${REFFILE} -fastq -shortPaired ${MAINFOLDER}/subsamples/*subsampledp.fastq
-=======
                     velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fastq -short ${MAINFOLDER}/subsamples/*subsampledu.fastq
                 fi
             else
                 echo "Running Velvet with PE reads"
                 velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fastq -shortPaired ${MAINFOLDER}/subsamples/*subsampledp.fastq
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
             fi
         fi
         echo ==== Velveth is finished ====
@@ -295,11 +265,9 @@ buildContigs(){
     if [[ $ASSEMBLER == "minia" ]]; then
         mkdir ${MAINFOLDER}/miniaoutput
         ls ${MAINFOLDER}/subsamples/*fastq | parallel -j ${PROCESSORS} basename > ${MAINFOLDER}/subsamples/minia_read_file.txt
-<<<<<<< HEAD
         minia -in ${MAINFOLDER}/subsamples/minia_read_file.txt -nb-cores "${PROCESSORS}" -out ${MAINFOLDER}/miniaoutput/
         mv ${MAINFOLDER}/miniaoutput/.contigs.fa ${MAINFOLDER}/miniaoutput/contigs.fa
     fi
-=======
         minia -in ${MAINFOLDER}/subsamples/minia_read_file.txt -kmer-size ${KMER} -nb-cores "${PROCESSORS}" -out ${MAINFOLDER}/miniaoutput/
         mv ${MAINFOLDER}/miniaoutput/.contigs.fa ${MAINFOLDER}/miniaoutput/contigs.fa
     fi
@@ -308,7 +276,6 @@ buildContigs(){
         mkdir ${MAINFOLDER}/abyssoutput
         ABYSS -k ${KMER} -o ${MAINFOLDER}/abyssoutput/contigs.fa ${MAINFOLDER}/subsamples/*fastq
     fi
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
 }
 
 alignContigs(){
@@ -326,15 +293,12 @@ alignContigs(){
         echo ==== Aligning FILELISTU ${NAME} ====
         #N=1 allows a mismatch #x The basename of the index for the reference genome
         bowtie2 -p "${PROCESSORS}" -N 1 --local -x ${MAINFOLDER}/"${CONTIGS}"/contigs -U ${FILE} > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -F 4 - | samtools sort - ${NAME}
-<<<<<<< HEAD
     done
     for FILE in "${FILELISTU[@]}"; do
         NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' ) #includes folder but not the read or the extension
         echo ==== Aligning FILELISTU ${NAME} ====
         #N=1 allows a mismatch #x The basename of the index for the reference genome
         bowtie2 -p "${PROCESSORS}" -N 1 --local -x ${MAINFOLDER}/velvetoutput/contigs -U ${FILE} > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -F 4 - | samtools sort - ${NAME}
-=======
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
     done
     echo ==== Done Aligning ====
 }
@@ -354,12 +318,9 @@ mapContigs(){
 }
 
 identifyFixedSites(){
-<<<<<<< HEAD
-=======
     samtools faidx ${MAINFOLDER}/${CONTIGS}/contigs.fa
     parallel --jobs "${PROCESSORS}" "samtools mpileup -f ${MAINFOLDER}/${CONTIGS}/contigs.fa" '$( echo {} | sed 's/R1//' | sed 's/\.[^.]*$//' ).bam -A > $( echo {} | sed 's/R1//' | sed 's/\.[^.]*$//' ).pileups' ::: "${FILELIST[@]}" "${FILELISTU[@]}"
     
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
     #put base for each site in a dictionary (allows no variation when calling sites)
     parallel --jobs "${PROCESSORS}" "${DIR}/libexec/sisrs/get_pruned_dict.py {} ${MINREAD} ${THRESHOLD}" ::: "${FOLDERLISTA[@]}"
     echo ==== Done Identifying Fixed Sites Without Error ====
@@ -367,15 +328,12 @@ identifyFixedSites(){
 
 outputAlignment(){
     if [ -n "${REFFILE}" ]; then
-<<<<<<< HEAD
         bi_sin_var=$(${DIR}/libexec/sisrs/get_alignment.py ${MISSING} ${REFFILE} ${MAINFOLDER})
     else
         bi_sin_var=$(${DIR}/libexec/sisrs/get_alignment.py ${MISSING} X ${MAINFOLDER})
-=======
         ${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) ${REFFILE} ${MAINFOLDER} ${ASSEMBLER}
     else
         ${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) X ${MAINFOLDER} ${ASSEMBLER}       #alignment with up to all but 2 missing
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
     fi
 }
 
@@ -392,13 +350,10 @@ runSISRS(){
     for (( i = $i; i < ${#cmds[@]}; i++ )); do      #run from selected opt to end
         ${cmds[$i]}
     done
-<<<<<<< HEAD
-=======
     
     ${DIR}/libexec/sisrs/filter_nexus_for_missing.py ${MAINFOLDER}/alignment.nex ${MISSING}       #alignment w specified number missing
     
     #run as raxml -s "${MAINFOLDER}"/alignment_mX.phylip-relaxed -n <out> -m ASC_GTRGAMMA [--asc-corr=lewis] -T $1 -f a -p $RANDOM -N 100 -x $RANDOM
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
 }
 
 ####################LOCI#######################
@@ -426,7 +381,6 @@ gfr_aligntoConservedContigs(){
         done        
     done
 }
-<<<<<<< HEAD
 
 gfr_mergebam(){
     declare -a TOMERGE=()
@@ -467,7 +421,6 @@ gfr_getAlignments(){
     for F in "${FOLDERLISTA[@]}"; do mv "${MAINFOLDER}"/loci/$(basename ${F}).fa "${MAINFOLDER}"/loci/$(basename ${F}).fasta; done   # delete species fasta files 
         
     find "${MAINFOLDER}"/loci/ -type f -name '*fa' | parallel -j "${PROCESSORS}" "mafft {} > {.}_align.fa"
-=======
 
 gfr_mergebam(){
     declare -a TOMERGE=()
@@ -536,7 +489,6 @@ gfr_selectLoci(){
     #run as raxml -r <known_tree> -M -m GTRGAMMA -p $RANDOM -T <num_threads> -q "${MAINFOLDER}"/loci/newpartitions.txt -s "${MAINFOLDER}"/loci/concat_loci.phylip-relaxed -n <out_name>
     
     ${DIR}/libexec/gfr/convert_formats.py "${MAINFOLDER}"/loci/concat_loci.phylip-relaxed phylip-relaxed mega       #convert format to mega for reltime
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
 }
 
 runGFR(){
@@ -548,10 +500,7 @@ runGFR(){
     
     gfr_aligntoConservedContigs
     gfr_mergebam
-<<<<<<< HEAD
     gfr_getAlleles
-=======
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
     
     if [ ! -d "${MAINFOLDER}"/loci ]; then
         mkdir "${MAINFOLDER}"/loci
@@ -559,13 +508,10 @@ runGFR(){
         find "${MAINFOLDER}"/loci/ -type f -name '*fa' | parallel -j "${PROCESSORS}" "rm -f {}"    #delete old loci
     fi
     
-<<<<<<< HEAD
     gfr_getAlignments
-=======
     gfr_getAlleles
     gfr_getAlignments
     gfr_selectLoci
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
 }
 
 ####################RUN####################
@@ -594,7 +540,6 @@ elif [[ $CMD = "loci" ]]; then
 else
     echo "You must specify sisrs sites or loci"
     exit 0
-<<<<<<< HEAD
 
 fi
   
@@ -640,7 +585,6 @@ if [[ DEBUG -eq 1 ]]; then
     echo "FOLDERLISTA   = ${FOLDERLISTA}"
     echo "MISSING       = ${MISSING}"
 fi
-=======
 fi
 
 if [[ DEBUG -eq 1 ]]; then
@@ -656,4 +600,3 @@ if [[ DEBUG -eq 1 ]]; then
     echo "FOLDERLISTA   = ${FOLDERLISTA}"
     echo "MISSING       = ${MISSING}"
 fi
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
