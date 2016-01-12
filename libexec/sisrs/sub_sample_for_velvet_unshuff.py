@@ -89,8 +89,5 @@ if len(sampleu)>0:
     for read_info in sampleu:
         f.write("".join(read_info))
     f.close()
-<<<<<<< HEAD
     print(str(len(sampleu)*2)+' unpaired reads sampled')
-=======
     print(str(len(sampleu)*2)+' unpaired reads sampled')
->>>>>>> ce4699889ad047406b1459b7f03c575a617b1099

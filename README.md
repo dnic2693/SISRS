@@ -33,13 +33,9 @@ Next-gen sequence data such as Illumina HiSeq reads.
 Data must be sorted into folders by taxon (e.g. species or genus).
 Paired reads in fastq format must be specified by R1 and R2 in the (otherwise identical) filenames.
 <<<<<<< HEAD
-<<<<<<< HEAD
-=======
 There should be no other R1 or R2 in the filename. If your file name is SRR287599_R2 you must change it to SRr287599_R2 or anything else you prefer.
 >>>>>>> rachelss/master
-=======
 There should be no other R1 or R2 in the filename. If your file name is SRR287599_R2 you must change it to SRr287599_R2 or anything else you prefer.
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
 Paired and unpaired reads must have a fastq file extension.
 
 Running SISRS
@@ -50,7 +46,6 @@ Usage:
  sisrs command options
 
 By default, SISRS assumes that
-<<<<<<< HEAD
 <<<<<<< HEAD
 * A reference genome is not available.
 * The K-mer size to be used by Velvet in contig assembly is 21.
@@ -72,8 +67,6 @@ Default settings can be changed using the following flags:
 
 Example command: sisrs -g 50000000 -r ./reference.fasta -p 40 -m 4 -a ./fastq_data/
 =======
-=======
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
 
  * A reference genome is not available.
  * The K-mer size to be used by Velvet in contig assembly is 21.
@@ -112,10 +105,7 @@ Flags:
       a site
  * -l : the number of alleles for sisrs loci
  * -a : change the assembler (specify Velvet or minia)
-<<<<<<< HEAD
 >>>>>>> rachelss/master
-=======
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
 
 Output
 ======
@@ -124,13 +114,9 @@ Nexus file with variable sites in a single alignment. Usable in most major phylo
 
 Test Data
 <<<<<<< HEAD
-<<<<<<< HEAD
-======
 
 The folder test_data contains simulated data for 10 species on the tree found in simtree.tre . The command to test sisrs is sisrs -g 1745690 . Using 40 processors this run took 9 minutes. Analysis of the alignment output by sisrs using raxml produced the correct tree.
 =======
-=======
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
 =========
 
 The folder test_data contains simulated data for 10 species on the tree found in simtree.tre . Using 40 processors this run took 9 minutes. Analysis of the alignment output by sisrs using raxml produced the correct tree.
@@ -155,7 +141,4 @@ Sample commands
    first name your reference loci ref_genes.fa and put in your main folder
    
    sisrs loci -p 40 -f test_data
-<<<<<<< HEAD
 >>>>>>> rachelss/master
-=======
->>>>>>> 5e81abb9d48ce20bdf1125dcd1f5197122ecc1ca
