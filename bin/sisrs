@@ -14,13 +14,9 @@ help() {
  Version 1.6
  Copyright (c) 2013-2015 Rachel Schwartz <Rachel.Schwartz@asu.edu>
  https://github.com/rachelss/SISRS
-
 Usage:
-
  sisrs command options
-
 By default, SISRS assumes that
-
  * A reference genome is not available.
  * The K-mer size to be used by Velvet in contig assembly is 21.
  * Only one processor is available.
@@ -30,7 +26,6 @@ By default, SISRS assumes that
  * Folders containing reads are in the present working directory.
  * A minimum of three reads are required to call the base at a site
    for a taxon.
-
 Commands:
  sites : produce an alignment of sites from raw reads
  alignContigs : run sisrs sites skipping the composite genome assembly
@@ -60,13 +55,11 @@ Flags:
  -o : the length of the final loci dataset for dating
  -l : the number of alleles
  -a : assembler (velvet, minia, or abyss)
-
  Example command:
  sisrs sites -g 1745690 -p 40 -m 4 -f test_data
  
  Example command:
  sisrs loci -g 1745690 -p 40 -m 4 -f test_data
-
 ENDLINE
 }
 
