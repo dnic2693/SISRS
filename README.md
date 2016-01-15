@@ -142,5 +142,3 @@ Sample commands
    
    sisrs loci -p 40 -f test_data
 >>>>>>> rachelss/master
-
-dom change 
