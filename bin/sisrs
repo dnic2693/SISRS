@@ -600,3 +600,5 @@ if [[ DEBUG -eq 1 ]]; then
     echo "FOLDERLISTA   = ${FOLDERLISTA}"
     echo "MISSING       = ${MISSING}"
 fi
+
+Happy New Year
