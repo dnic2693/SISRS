@@ -1,7 +1,6 @@
 #!/usr/bin/env python2
 
 """Take multiple mpileup files and determine the base at each position of the reference genome
-
     arguments:
         path: folder containing mpileup files ending in pileups
         minread: number of reads at a position required to call a base
@@ -9,7 +8,6 @@
         
     output:
         path/pruned_dict.pkl : contains pickled dictionary of position:base
-
 """
 
 import sys
@@ -34,7 +32,7 @@ def getallbases(path):
                 bases=bases.upper() #everything in uppercase
                 bases2 = remove_extra(bases)
 
-                assert len(bases2) == num, 'bases are being counted incorrectly: '+\
+                assert len(bases2) == int(num), 'bases are being counted incorrectly: '+\
                                           bases + ' should have '+str(num)+' bases, but it is being converted to '+"".join(bases2)
 
                 loc=node+'/'+pos
@@ -62,15 +60,17 @@ def determine_base(bases,minread,thresh):
 def remove_extra(base_str):
     bases=['A','C','G','T','D']     #D indicates del
     new_base_list=[]
-    ibase_list = iter(re.findall('[A-Z]+|\+[0-9]+|\-[0-9]+|\^.',base_str))  #group by bases, indels, read start (need this to get rid of following ascii code), don't worry about $
+    ibase_list = iter(re.findall('\-$|\-[0-9]+|\-*[A-Z]*\-*[A-Z]+|\+[0-9]+|\^.',base_str))  #group by bases, indels, read start (need this to get rid of following ascii code), don't worry about $
     for b in ibase_list:
         if b[0] in string.ascii_uppercase:     #allows for any other characters - filter out later (in case of ZAAA)
             new_base_list.extend(b)         #get bases
         elif b[0]=='+' or b[0]=='-':        #skip indels
-            i = int(b[1:])                  #account for ints >=10
-            b2=ibase_list.next()
-            if len(b2) > i:
-                new_base_list.extend(b2[i:])    #can have real bases after indel bases
+            if len(b)>1:
+                if b[1].isdigit():
+                    i = int(b[1:])                  #account for ints >=10
+                    b2=ibase_list.next()
+                    if len(b2) > i:
+                        new_base_list.extend(b2[i:])    #can have real bases after indel bases
         elif b[0]=='^':                        #skip read qual noted at end of read
             continue
     new_base_list = [i for i in new_base_list if i in bases]    #filter unknown bases
@@ -86,7 +86,7 @@ path=sys.argv[1]
 minread=int(sys.argv[2])
 thresh=float(sys.argv[3])
 
-test_remove_extra('A+1CAAA-10*******AAA^--1*AA-2CAA-2**A-2***','AAAAAAAAD')
+test_remove_extra('A+1CAAA-10*******AAA^--1*AA-2CAA-2**A-2***'.replace('*','D'),'AAAAAAAAD')
 
 allbases=getallbases(path)      #dictionary of combined pileups - locus/pos:bases(as list)
 for pos in allbases:
