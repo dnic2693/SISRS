@@ -341,11 +341,6 @@ outputAlignment(){
     
 }
 
-if [ -n "${REFFILE}" ]; then
-        bi_sin_var=$(${DIR}/libexec/sisrs/get_alignment.py ${MISSING} ${REFFILE} ${MAINFOLDER})
-    else
-        bi_sin_var=$(${DIR}/libexec/sisrs/get_alignment.py ${MISSING} X ${MAINFOLDER})
-
 changeMissing(){
     if [[ ${MISSING} -lt $((${#FOLDERLISTA[@]} - 2)) ]]; then
         ${DIR}/libexec/sisrs/filter_nexus_for_missing.py ${MAINFOLDER}/alignment.nex ${MISSING}       #alignment w specified number missing
