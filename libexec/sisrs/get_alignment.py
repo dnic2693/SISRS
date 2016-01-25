@@ -49,7 +49,7 @@ class Alignment:
         self.single = single
         
     def numsnps(self):
-        f = open("metrics_file.txt", "w")
+        f = open("metrics_file.txt", "a")
         f.write(str(len(self.locations)))
         print str(len(self.locations))+' variable sites'
         for i in range(len(self.locations)):
