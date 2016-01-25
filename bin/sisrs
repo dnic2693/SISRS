@@ -330,9 +330,9 @@ identifyFixedSites(){
 
 outputAlignment(){
     if [ -n "${REFFILE}" ]; then
-        bi_sin_var=$(${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) ${REFFILE} ${MAINFOLDER} ${ASSEMBLER} | grep "variable" | grep "biallelic")
+        bi_sin_var=$(${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) ${REFFILE} ${MAINFOLDER} ${ASSEMBLER} | grep "variable|biallelic")
     else
-        bi_sin_var=$(${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) X ${MAINFOLDER} ${ASSEMBLER} | grep "variable" | grep "biallelic")      #alignment with up to all but 2 missing
+        bi_sin_var=$(${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) X ${MAINFOLDER} ${ASSEMBLER} | grep "variable|biallelic")      #alignment with up to all but 2 missing
     fi
     if [[ $? != 0 ]]; then
         echo "get_alignment.py failed"
