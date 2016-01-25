@@ -51,7 +51,7 @@ class Alignment:
     def numsnps(self):
         f = open("metrics_file.txt", "a")
         f.write(str(len(self.locations)))
-        f.write("")
+        f.write(" ")
         print str(len(self.locations))+' variable sites'
         for i in range(len(self.locations)):
             bases = [self.species_data[sp][i] for sp in self.species_data if self.species_data[sp][i] in ['A','C','G','T','-']]     #bases for that site
@@ -63,10 +63,10 @@ class Alignment:
             self.flag.append(len(c))
                 
         f.write(str(self.flag.count(2)))
-        f.write("")
+        f.write(" ")
         print str(self.flag.count(2))+' biallelic sites'
         f.write(str(self.single.count(1)))
-        f.write("")
+        f.write(" ")
         f.close()
         print str(self.single.count(1))+' singletons'
         
