@@ -579,7 +579,7 @@ DATA_SET_FILE_PATH=$(pwd)
 END=$(date +%s)
 TIME=$(( $END - $START ))
 
-echo "${ASSEMBLER}" "$SIZE_OF_CONTIGS" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$Number_of_Contigs" "${KMER}" "${MISSING}" "$DATA_SET_FILE_PATH" >> metrics_file.txt
+echo "${ASSEMBLER}" "$SIZE_OF_CONTIGS" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$Number_of_Contigs" "${KMER}" "${MISSING}" "$DATA_SET_FILE_PATH " >> metrics_file.txt
 
 if [[ DEBUG -eq 1 ]]; then
     echo "DIRS          = ${DIRS}"
