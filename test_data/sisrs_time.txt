@@ -3,7 +3,7 @@
 perl -pi -e 'chomp if eof' metrics_file.txt
 tail -1 output.txt >> metrics_file.txt
 
-echo "Assembler" "Size_Of_Data_Set_kiB" "Number_of_Processors" "Genome_Size_bp" "Time_Seconds" "N50" "Number_of_Contigs" "kmer_size" "missing" "Data_Set_File_Path" "variable_sites"
+echo "Assembler" "Size_Of_Data_Set_kiB" "Number_of_Processors" "Genome_Size_bp" "Time_Seconds" "N50" "Number_of_Contigs" "kmer_size" "missing" "Data_Set_File_Path" "variable_sites" >> metrics_file.txt
 
 ../source/bin/sisrs changeMissing -g 1745690 -p 20 -a minia -m 0
 perl -pi -e 'chomp if eof' metrics_file.txt
