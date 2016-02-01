@@ -2,7 +2,11 @@
 /usr/bin/time -f "%M" ../source/bin/sisrs sites -g 1745690 -p 20 -a minia 2> output.txt
 perl -pi -e 'chomp if eof' metrics_file.txt
 tail -1 output.txt >> metrics_file.txt
+
+#add x, x, x to realign columns after sisrs runs above
+
 ../source/bin/sisrs changeMissing -g 1745690 -p 20 -a minia -m 0
+perl -pi -e 'chomp if eof' metrics_file.txt
 head -n1 alignment_m0.phylip-relaxed | awk -v x=2 '{print $x}' >> metrics_file.txt
 
 #When prompted in shell: Type '1' then 'enter' for yes or Type '2' then 'enter' for no
