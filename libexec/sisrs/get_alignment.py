@@ -49,10 +49,11 @@ class Alignment:
         self.single = single
         
     def numsnps(self):
-        f = open("metrics_file.txt", "a")
-        f.write(str(len(self.locations)))
-        f.write(" ")
-        print str(len(self.locations))+' variable sites'
+        #have everything print then save to variable or have print to another file
+        #f = open("metrics_file.txt", "a")
+        #f.write(str(len(self.locations)))
+        #f.write(" ")
+        print str(len(self.locations))#+' variable sites'
         for i in range(len(self.locations)):
             bases = [self.species_data[sp][i] for sp in self.species_data if self.species_data[sp][i] in ['A','C','G','T','-']]     #bases for that site
             c = Counter(bases).most_common(5)
@@ -62,15 +63,15 @@ class Alignment:
                 self.single.append(0)
             self.flag.append(len(c))
                 
-        f.write(str(self.flag.count(2)))
-        f.write(" ")
-        print str(self.flag.count(2))+' biallelic sites'
-        f.write(str(self.single.count(1)))
-        f.write(" ")
-        f.close()
-        print str(self.single.count(1))+' singletons'
+        #f.write(str(self.flag.count(2)))
+        #f.write(" ")
+        #print str(self.flag.count(2))+' biallelic sites'
+        #f.write(str(self.single.count(1)))
+        #f.write(" ")
+        #f.close()
+        #print str(self.single.count(1))+' singletons'
         
-        return self.flag.count(2)       # number of biallelic sites
+        #return self.flag.count(2)       # number of biallelic sites
 
 def makerefdict(reffasta):
     ''' takes fasta file, returns dict of contig_name:[sequence]    '''

@@ -107,7 +107,7 @@ done
 echo "Would you like to create a new metrics file?"
 select yn in "Yes" "No"; do
 case $yn in
-Yes ) echo "variable_sites" "biallelic_sites" "singletons" "Name_Of_Assembler" "Size_Of_Data_Set_kiB" "Number_of_Processors" "Genome_Size_bp" "Time_Seconds" "N50" "Number_of_Contigs" "kmer_size" "missing" "Data_Set_File_Path" "RAM_KB" > metrics_file.txt; break;;
+Yes ) echo "Name_Of_Assembler" "Size_Of_Data_Set_kiB" "Number_of_Processors" "Genome_Size_bp" "Time_Seconds" "N50" "Number_of_Contigs" "kmer_size" "missing" "Data_Set_File_Path" "var_sites" "RAM_KB" > metrics_file.txt; break;;
 No ) echo "" >> metrics_file.txt; break;;
 esac
 done
@@ -330,9 +330,9 @@ identifyFixedSites(){
 
 outputAlignment(){
     if [ -n "${REFFILE}" ]; then
-        ${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) ${REFFILE} ${MAINFOLDER} ${ASSEMBLER}
+        var_sites=$(${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) ${REFFILE} ${MAINFOLDER} ${ASSEMBLER})
     else
-        ${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) X ${MAINFOLDER} ${ASSEMBLER}      #alignment with up to all but 2 missing
+        var_sites=$(${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) X ${MAINFOLDER} ${ASSEMBLER})     #alignment with up to all but 2 missing
     fi
     if [[ $? != 0 ]]; then
         echo "get_alignment.py failed"
@@ -579,7 +579,7 @@ DATA_SET_FILE_PATH=$(pwd)
 END=$(date +%s)
 TIME=$(( $END - $START ))
 
-echo "${ASSEMBLER}" "$SIZE_OF_CONTIGS" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$Number_of_Contigs" "${KMER}" "${MISSING}" "$DATA_SET_FILE_PATH " >> metrics_file.txt
+echo "${ASSEMBLER}" "$SIZE_OF_CONTIGS" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$Number_of_Contigs" "${KMER}" "${MISSING}" "$DATA_SET_FILE_PATH" "$var_sites " >> metrics_file.txt
 
 if [[ DEBUG -eq 1 ]]; then
     echo "DIRS          = ${DIRS}"
