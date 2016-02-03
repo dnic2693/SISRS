@@ -330,9 +330,9 @@ identifyFixedSites(){
 
 outputAlignment(){
     if [ -n "${REFFILE}" ]; then
-        var_sites=$(${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) ${REFFILE} ${MAINFOLDER} ${ASSEMBLER})
+        var_sites=($(${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) ${REFFILE} ${MAINFOLDER} ${ASSEMBLER}))
     else
-        var_sites=$(${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) X ${MAINFOLDER} ${ASSEMBLER})     #alignment with up to all but 2 missing
+        var_sites=($(${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) X ${MAINFOLDER} ${ASSEMBLER}))     #alignment with up to all but 2 missing
     fi
     if [[ $? != 0 ]]; then
         echo "get_alignment.py failed"
@@ -579,7 +579,7 @@ DATA_SET_FILE_PATH=$(pwd)
 END=$(date +%s)
 TIME=$(( $END - $START ))
 
-echo "${ASSEMBLER}" "$SIZE_OF_CONTIGS" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$Number_of_Contigs" "${KMER}" "${MISSING}" "$DATA_SET_FILE_PATH" "$var_sites " >> metrics_file.txt
+echo "${ASSEMBLER}" "$SIZE_OF_CONTIGS" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$Number_of_Contigs" "${KMER}" "${MISSING}" "$DATA_SET_FILE_PATH" "${var_sites[@](-1)} " >> metrics_file.txt
 
 if [[ DEBUG -eq 1 ]]; then
     echo "DIRS          = ${DIRS}"
