@@ -104,6 +104,16 @@ do
     esac
 done
 
+echo "Would you like to create a new metrics file?"
+select yn in "Yes" "No"; do
+case $yn in
+Yes ) echo "Name_Of_Assembler" "Size_Of_Data_Set_kiB" "Number_of_Processors" "Genome_Size_bp" "Time_Seconds" "N50" "Number_of_Contigs" "kmer_size" "missing" "Data_Set_File_Path" "var_sites" "RAM_KB" > metrics_file.txt; break;;
+No ) echo "" >> metrics_file.txt; break;;
+esac
+done
+
+START=$(date +%s)
+
 DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the sisrs file?
 DIR=$( dirname ${DIRS} )                                    #go one level up from location of sisrs file
 MAINFOLDER=$( echo "${MAINFOLDER}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
@@ -320,9 +330,9 @@ identifyFixedSites(){
 
 outputAlignment(){
     if [ -n "${REFFILE}" ]; then
-        ${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) ${REFFILE} ${MAINFOLDER} ${ASSEMBLER}
+        var_sites=($(${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) ${REFFILE} ${MAINFOLDER} ${ASSEMBLER}))
     else
-        ${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) X ${MAINFOLDER} ${ASSEMBLER}       #alignment with up to all but 2 missing
+        var_sites=($(${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) X ${MAINFOLDER} ${ASSEMBLER}))       #alignment with up to all but 2 missing
     fi
     if [[ $? != 0 ]]; then
         echo "get_alignment.py failed"
@@ -557,6 +567,19 @@ else
     echo "You must specify sisrs sites or loci"
     exit 0
 fi
+
+SIZE_OF_CONTIGS=$(du -h -k ${MAINFOLDER}/"${CONTIGS}"/contigs.fa | cut -f1)
+
+Number_of_Contigs=$(grep -c '>' ${MAINFOLDER}/"${CONTIGS}"/contigs.fa)
+
+N_50=$(${DIR}/libexec/gfr/get_N50.py ${MAINFOLDER}/"${CONTIGS}"/contigs.fa)
+
+DATA_SET_FILE_PATH=$(pwd)
+
+END=$(date +%s)
+TIME=$(( $END - $START ))
+
+echo "${ASSEMBLER}" "$SIZE_OF_CONTIGS" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$Number_of_Contigs" "${KMER}" "${MISSING}" "$DATA_SET_FILE_PATH" "${var_sites[-1]} " >> metrics_file.txt
 
 if [[ DEBUG -eq 1 ]]; then
     echo "DIRS          = ${DIRS}"
