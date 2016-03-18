@@ -104,16 +104,6 @@ do
     esac
 done
 
-echo "Would you like to create a new metrics file?"
-select yn in "Yes" "No"; do
-case $yn in
-Yes ) echo "Name_Of_Assembler" "Size_Of_Data_Set_kiB" "Number_of_Processors" "Genome_Size_bp" "Time_Seconds" "N50" "Number_of_Contigs" "kmer_size" "missing" "Data_Set_File_Path" "var_sites" "RAM_KB" > metrics_file.txt; break;;
-No ) echo "" >> metrics_file.txt; break;;
-esac
-done
-
-START=$(date +%s)
-
 DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the sisrs file?
 DIR=$( dirname ${DIRS} )                                    #go one level up from location of sisrs file
 MAINFOLDER=$( echo "${MAINFOLDER}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
@@ -264,13 +254,13 @@ alignContigs(){
         NAME=$( echo ${FILE} | sed s/${FILEID}// | sed 's/\.[^.]*$//' ) #includes folder but not the read or the extension
         echo ==== Aligning FILELIST ${NAME}  ====
         #N=1 allows a mismatch #x The basename of the index for the reference genome
-        bowtie2 -p "${PROCESSORS}" -N 1 --local -x ${MAINFOLDER}/"${CONTIGS}"/contigs -1 ${FILE} -2 $( echo ${FILE}|sed s/${FILEID}/${FILEID2}/ ) > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -@ "${PROCESSORS}" -F 4 - | samtools sort -@ "${PROCESSORS}" - ${NAME}
+        bowtie2 -p "${PROCESSORS}" -N 1 --local -x ${MAINFOLDER}/"${CONTIGS}"/contigs -1 ${FILE} -2 $( echo ${FILE}|sed s/${FILEID}/${FILEID2}/ ) > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -@ "${PROCESSORS}" -F 4 - | samtools sort -@ "${PROCESSORS}" - -o ${NAME}.bam
     done
     for FILE in "${FILELISTU[@]}"; do
         NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' ) #includes folder but not the read or the extension
         echo ==== Aligning FILELISTU ${NAME} ====
         #N=1 allows a mismatch #x The basename of the index for the reference genome
-        bowtie2 -p "${PROCESSORS}" -N 1 --local -x ${MAINFOLDER}/"${CONTIGS}"/contigs -U ${FILE} > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -@ "${PROCESSORS}" -F 4 - | samtools sort -@ "${PROCESSORS}" - ${NAME}
+        bowtie2 -p "${PROCESSORS}" -N 1 --local -x ${MAINFOLDER}/"${CONTIGS}"/contigs -U ${FILE} > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -@ "${PROCESSORS}" -F 4 - | samtools sort -@ "${PROCESSORS}" - -o ${NAME}.bam
     done
     echo ==== Done Aligning ====
 }
@@ -307,12 +297,12 @@ identifyFixedSites(){
     for FILE in "${FILELIST[@]}"; do
         NAME=$( echo ${FILE} | sed s/${FILEID}// | sed 's/\.[^.]*$//' )
         echo ==== Aligning FILELIST ${NAME}  ====
-        bowtie2 -p "${PROCESSORS}" -N 1 --local -x $(dirname ${FILE})/contigs -1 ${FILE} -2 $( echo ${FILE}|sed s/${FILEID}/${FILEID2}/ ) > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -@ "${PROCESSORS}" -F 4 - | samtools sort -@ "${PROCESSORS}" - ${NAME}
+        bowtie2 -p "${PROCESSORS}" -N 1 --local -x $(dirname ${FILE})/contigs -1 ${FILE} -2 $( echo ${FILE}|sed s/${FILEID}/${FILEID2}/ ) > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -@ "${PROCESSORS}" -F 4 - | samtools sort -@ "${PROCESSORS}" - -o ${NAME}.bam
     done
     for FILE in "${FILELISTU[@]}"; do
         NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
         echo ==== Aligning FILELISTU ${NAME} ====
-        bowtie2 -p "${PROCESSORS}" -N 1 --local -x $(dirname ${FILE})/contigs -U ${FILE} > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -@ "${PROCESSORS}" -F 4 - | samtools sort -@ "${PROCESSORS}" - ${NAME}
+        bowtie2 -p "${PROCESSORS}" -N 1 --local -x $(dirname ${FILE})/contigs -U ${FILE} > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -@ "${PROCESSORS}" -F 4 - | samtools sort -@ "${PROCESSORS}" - -o ${NAME}.bam
     done
     
     parallel --jobs "${PROCESSORS}" 'samtools index "$( echo {} | sed 's/"${FILEID}"//' | sed s/\.[^.]*$// )".bam' ::: "${FILELIST[@]}"
@@ -330,9 +320,9 @@ identifyFixedSites(){
 
 outputAlignment(){
     if [ -n "${REFFILE}" ]; then
-        var_sites=($(${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) ${REFFILE} ${MAINFOLDER} ${ASSEMBLER}))
+        ${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) ${REFFILE} ${MAINFOLDER} ${ASSEMBLER}
     else
-        var_sites=($(${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) X ${MAINFOLDER} ${ASSEMBLER}))     #alignment with up to all but 2 missing
+        ${DIR}/libexec/sisrs/get_alignment.py $((${#FOLDERLISTA[@]} - 2)) X ${MAINFOLDER} ${ASSEMBLER}       #alignment with up to all but 2 missing
     fi
     if [[ $? != 0 ]]; then
         echo "get_alignment.py failed"
@@ -384,13 +374,13 @@ fromRefToSpRef(){
         NAME=$( echo ${FILE} | sed s/${FILEID}// | sed 's/\.[^.]*$//' ) #includes folder but not the read or the extension
         echo ==== Aligning FILELIST ${NAME}  ====
         #N=1 allows a mismatch #x The basename of the index for the reference genome
-        bowtie2 -p "${PROCESSORS}" -N 1 --local -x ${MAINFOLDER}/ref_genes -1 ${FILE} -2 $( echo ${FILE}|sed s/${FILEID}/${FILEID2}/ ) > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools -@ "${PROCESSORS}" view -Su -F 4 - | samtools sort -@ "${PROCESSORS}"- ${NAME}
+        bowtie2 -p "${PROCESSORS}" -N 1 --local -x ${MAINFOLDER}/ref_genes -1 ${FILE} -2 $( echo ${FILE}|sed s/${FILEID}/${FILEID2}/ ) > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools -@ "${PROCESSORS}" view -Su -F 4 - | samtools sort -@ "${PROCESSORS}"- -o ${NAME}.bam
     done
     for FILE in "${FILELISTU[@]}"; do
         NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' ) #includes folder but not the read or the extension
         echo ==== Aligning FILELISTU ${NAME} ====
         #N=1 allows a mismatch #x The basename of the index for the reference genome
-        bowtie2 -p "${PROCESSORS}" -N 1 --local -x ${MAINFOLDER}/ref_genes -U ${FILE} > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -@ "${PROCESSORS}" -F 4 - | samtools sort -@ "${PROCESSORS}" - ${NAME}
+        bowtie2 -p "${PROCESSORS}" -N 1 --local -x ${MAINFOLDER}/ref_genes -U ${FILE} > >(tee ${NAME}_stdout.log) 2> >(tee ${NAME}_stderr.log >&2) | samtools view -Su -@ "${PROCESSORS}" -F 4 - | samtools sort -@ "${PROCESSORS}" - -o ${NAME}.bam
     done
     
     samtools faidx ${MAINFOLDER}/ref_genes.fa
@@ -408,13 +398,13 @@ gfr_aligntoConservedContigs(){
         for FILE in "${FOLDER}"/*${FILEID}*fastq; do
 	    # output sorted bam file w/o unaligned reads - lots per folder
             echo Aligning ${FILE} to conserved contigs
-	    bowtie2 -p "${PROCESSORS}" -N 1 --local -x "${FOLDER}"/ref_genes -1 ${FILE} -2 $( echo ${FILE}|sed s/${FILEID}/${FILEID2}/ ) > >(tee ${FILE/.fastq/}_stdout.log) 2> >(tee ${FILE/.fastq/}_stderr.log >&2) | samtools view -Su -@ "${PROCESSORS}" -F 4 - | samtools sort -@ "${PROCESSORS}" - "$FOLDER"_loci/$(basename ${FILE/.fastq})  
+	    bowtie2 -p "${PROCESSORS}" -N 1 --local -x "${FOLDER}"/ref_genes -1 ${FILE} -2 $( echo ${FILE}|sed s/${FILEID}/${FILEID2}/ ) > >(tee ${FILE/.fastq/}_stdout.log) 2> >(tee ${FILE/.fastq/}_stderr.log >&2) | samtools view -Su -@ "${PROCESSORS}" -F 4 - | samtools sort -@ "${PROCESSORS}" - -o "$FOLDER"_loci/$(basename ${FILE/.fastq}).bam  
         done
     done
     
     for FOLDER in "${FOLDERLISTU[@]}"; do
         for FILE in "${FOLDER}"/*reads*fastq; do
-            bowtie2 -p "${PROCESSORS}" -N 1 --local -x "${FOLDER}"/ref_genes -U ${FILE} > >(tee ${FILE/.fastq/}_stdout.log) 2> >(tee ${FILE/.fastq/}_stderr.log >&2) | samtools view -Su -@ "${PROCESSORS}" -F 4 - | samtools sort -@ "${PROCESSORS}" - "$FOLDER"_loci/$(basename ${FILE/.fastq})  
+            bowtie2 -p "${PROCESSORS}" -N 1 --local -x "${FOLDER}"/ref_genes -U ${FILE} > >(tee ${FILE/.fastq/}_stdout.log) 2> >(tee ${FILE/.fastq/}_stderr.log >&2) | samtools view -Su -@ "${PROCESSORS}" -F 4 - | samtools sort -@ "${PROCESSORS}" - -o "$FOLDER"_loci/$(basename ${FILE/.fastq}).bam  
         done        
     done
 }
@@ -567,19 +557,6 @@ else
     echo "You must specify sisrs sites or loci"
     exit 0
 fi
-
-SIZE_OF_CONTIGS=$(du -h -k ${MAINFOLDER}/"${CONTIGS}"/contigs.fa | cut -f1)
-
-Number_of_Contigs=$(grep -c '>' ${MAINFOLDER}/"${CONTIGS}"/contigs.fa)
-
-N_50=$(${DIR}/libexec/gfr/get_N50.py ${MAINFOLDER}/"${CONTIGS}"/contigs.fa)
-
-DATA_SET_FILE_PATH=$(pwd)
-
-END=$(date +%s)
-TIME=$(( $END - $START ))
-
-echo "${ASSEMBLER}" "$SIZE_OF_CONTIGS" "${PROCESSORS}" "${GENOMESIZE}" "$TIME" "$N_50" "$Number_of_Contigs" "${KMER}" "${MISSING}" "$DATA_SET_FILE_PATH" "${var_sites[-1]} " >> metrics_file.txt
 
 if [[ DEBUG -eq 1 ]]; then
     echo "DIRS          = ${DIRS}"
