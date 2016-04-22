@@ -1,1 +1,18 @@
-The
+Using Dominic Nicacio's version of SISRS:
+
+1. After entering the sisrs command you will be prompted:"Would you like to create a new metrics file?"
+2. Metrics file refers to a text file that sisrs will output various statistics and information to at the end of each run. 
+   The prompt will give you the option to wipe the metrics file clean and overwrite it with new data OR to maintain the data
+   previously written to the file and to append new data from the current run to a new line in the metrics file
+3. To answer Yes to the prompt, enter "1" OR to answer No, enter "2"
+
+Using sisrs_time.txt:
+-- This script can be used to wrap sisrs in other commands.
+-- Operating sisrs_time.txt:
+    There are two separate commands written into sisrs_time.txt:
+      1. The first command in the text file is a for loop that iterates over multiple runs of sisrs for different kmer sizes.
+         The command that the for loop is iterated over is usr/bin/time which takes sisrs as its argument to analyze its RAM usage.
+      2. The second command (which is currently commented out) is a for loop that iterates over multiple runs of sisrs for different
+         specified amounts of missing data. The command that this for loop is iterated over is a specific sisrs command "changeMissing"
+         This command enables sisrs to filter the data it outputs based on the different amounts of missing data (specified in the for
+         loop) without having to complete an entire run from scratch.
