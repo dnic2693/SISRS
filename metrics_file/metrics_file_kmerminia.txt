@@ -1,0 +1,13 @@
+Name_Of_Assembler Size_Of_Data_Set_kiB Number_of_Processors Genome_Size_bp Time_Seconds N50 Number_of_Contigs kmer_size missing Data_Set_File_Path var_sites RAM_KB
+
+minia 2680 20 1745690 214 39 47557 15 9 /home/dnicacio/SISRS_test_data 42842 462200
+
+minia 5284 20 1745690 281 53 75439 17 9 /home/dnicacio/SISRS_test_data 194881 1121116
+
+minia 6136 20 1745690 362 74 70453 19 9 /home/dnicacio/SISRS_test_data 408761 1541400
+
+minia 6092 20 1745690 422 98 58272 21 9 /home/dnicacio/SISRS_test_data 561999 1642344
+
+minia 5876 20 1745690 446 117 49739 23 9 /home/dnicacio/SISRS_test_data 630910 1864268
+
+minia 5672 20 1745690 447 128 44512 25 9 /home/dnicacio/SISRS_test_data 652912 1884508

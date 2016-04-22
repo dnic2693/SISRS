@@ -1,0 +1,40 @@
+Name_Of_Assembler Size_Of_Data_Set_kiB Number_of_Processors Genome_Size_bp Time_Seconds N50 Number_of_Contigs kmer_size missing Data_Set_File_Path var_sites RAM_KB
+minia 6088 20 1745690 531 98 58107 21 9 /home/dnicacio/SISRS_test_data 563067 1645260
+
+minia 6084 20 1745690 468 97 58216 21 9 /home/dnicacio/SISRS_test_data 560388 1642840
+
+minia 6096 20 1745690 426 98 58342 21 9 /home/dnicacio/SISRS_test_data 564316 1646044
+
+minia 6100 20 1745690 479 98 58292 21 9 /home/dnicacio/SISRS_test_data 560758 1644144
+
+minia 6084 20 1745690 482 99 58097 21 9 /home/dnicacio/SISRS_test_data 560321 1643788
+
+minia 6096 20 1745690 489 98 58344 21 9 /home/dnicacio/SISRS_test_data 562609 1641376
+
+minia 6108 20 1745690 475 98 58388 21 9 /home/dnicacio/SISRS_test_data 561621 1645284
+
+minia 6084 20 1745690 496 99 57957 21 9 /home/dnicacio/SISRS_test_data 562937 1645480
+
+minia 6088 20 1745690 475 98 58310 21 9 /home/dnicacio/SISRS_test_data 561488 1643416
+
+minia 6112 20 1745690 410 97 58558 21 9 /home/dnicacio/SISRS_test_data 561211 1644540
+
+velvet 6056 20 1745690 365 200 26740 21 9 /home/dnicacio/SISRS_test_data 669079 2218620
+
+velvet 6040 20 1745690 369 199 26640 21 9 /home/dnicacio/SISRS_test_data 663400 2214396
+
+velvet 6092 20 1745690 389 200 26882 21 9 /home/dnicacio/SISRS_test_data 663769 2168640
+
+velvet 6084 20 1745690 370 200 26828 21 9 /home/dnicacio/SISRS_test_data 660377 2170208
+
+velvet 6040 20 1745690 377 200 26601 21 9 /home/dnicacio/SISRS_test_data 665328 2166884
+
+velvet 6072 20 1745690 370 200 26740 21 9 /home/dnicacio/SISRS_test_data 669994 2171020
+
+velvet 6040 20 1745690 368 201 26488 21 9 /home/dnicacio/SISRS_test_data 670225 2168996
+
+velvet 6056 20 1745690 366 199 26789 21 9 /home/dnicacio/SISRS_test_data 672004 2171364
+
+velvet 6096 20 1745690 375 200 26805 21 9 /home/dnicacio/SISRS_test_data 669421 2170076
+
+velvet 6064 20 1745690 369 198 26820 21 9 /home/dnicacio/SISRS_test_data 668664 2222552
