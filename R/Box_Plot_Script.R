@@ -1,0 +1,2 @@
+metrics<-read.table(file = "Desktop/Cartwright_Lab_Stuff/metrics_file/metrics_file_repl_copy.txt",header=TRUE)
+boxplot(var_sites~Assembler, data=metrics, main=toupper("Sites vs Assembler"), font.main=3, cex.main=1.2, xlab="Assembler", ylab="Sites", font.lab=3, col="darkgreen")

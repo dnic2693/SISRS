@@ -1,0 +1,42 @@
+tableData_Set_File_Path Size_Of_Data_Set_kiB Name_Of_Assembler Number_of_Processors Genome_Size_bp Time_Seconds N50 Number_of_Contigs biallelic_sites singletons variable_sites kmer_size missing
+/home/dnic2693/source/test_data 6084 Velvet 20 1745690 240 200 26809 0 0 0 21 0
+
+/home/dnic2693/source/test_data 6052 Velvet 20 1745690 244 201 26617 4898 2584 5058 21 1
+
+/home/dnic2693/source/test_data 6036 Velvet 20 1745690 235 199 26656 11718 6104 12105 21 2
+
+/home/dnic2693/source/test_data 6052 Velvet 20 1745690 242 201 26592 17942 9320 18539 21 3
+
+/home/dnic2693/source/test_data 6132 Velvet 20 1745690 253 201 26889 25576 14160 26498 21 4
+
+/home/dnic2693/source/test_data 6092 Velvet 20 1745690 267 200 26884 56932 36541 59218 21 5
+
+/home/dnic2693/source/test_data 6072 Velvet 20 1745690 253 199 26852 101420 69626 105444 21 6
+
+/home/dnic2693/source/test_data 6028 Velvet 20 1745690 251 199 26622 182427 138098 188514 21 7
+
+/home/dnic2693/source/test_data 6116 Velvet 20 1745690 264 199 27070 276665 233589 284005 21 8
+
+/home/dnic2693/source/test_data 6024 Velvet 20 1745690 268 198 26622 344758 301682 352098 21 9
+
+
+
+/home/dnic2693/source/test_data 5124 minia 20 1745690 224 147 35147 0 0 0 21 0
+
+/home/dnic2693/source/test_data 5132 minia 20 1745690 235 144 35481 4898 2584 5058 21 1
+
+/home/dnic2693/source/test_data 5104 minia 20 1745690 227 145 35111 11718 6104 12105 21 2
+
+/home/dnic2693/source/test_data 5120 minia 20 1745690 240 145 35218 17942 9320 18539 21 3
+
+/home/dnic2693/source/test_data 5116 minia 20 1745690 243 144 35332 25576 14160 26498 21 4
+
+/home/dnic2693/source/test_data 5132 minia 20 1745690 220 144 35402 56932 36541 59218 21 5
+
+/home/dnic2693/source/test_data 5156 minia 20 1745690 240 145 35620 101420 69626 105444 21 6
+
+/home/dnic2693/source/test_data 5140 minia 20 1745690 240 145 35423 182427 138098 188514 21 7
+
+/home/dnic2693/source/test_data 5096 minia 20 1745690 256 145 35000 276665 233589 284005 21 8
+
+/home/dnic2693/source/test_data 5120 minia 20 1745690 243 144 35317 344758 301682 352098 21 9

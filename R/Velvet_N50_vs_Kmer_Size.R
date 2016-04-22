@@ -1,0 +1,5 @@
+metrics_kmer<-read.table(file = "Desktop/metrics_file_kmer.txt",header=TRUE)
+velvet_N50 <- c(metrics_kmer$N50)
+velvet_kmer <- c(metrics_kmer$kmer_size)
+plot(velvet_kmer, velvet_N50, type="o", col="blue")
+title(main="Velvet N50 vs Kmer Size", col.main="black")
